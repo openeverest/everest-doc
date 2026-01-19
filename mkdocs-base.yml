@@ -134,7 +134,7 @@ plugins:
     cover_subtitle: version (Date, Year)
 
     author: "Everest Team"
-    cover_logo: docs/images/Percona_Logo_Color.png
+    cover_logo: docs/images/open-everest-logo.png
     enabled_if_env: ENABLE_PDF_EXPORT
   # Check links - but extends build time significantly
   # https://pypi.org/project/mkdocs-htmlproofer-plugin/
