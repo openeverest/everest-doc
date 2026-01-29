@@ -63,6 +63,7 @@
     📘 For detailed instructions, refer to our [documentation](../networking/load_balancer_config.md).
     
     📘 Related GitHub issue: [#1817](https://github.com/openeverest/openeverest/issues/1817)
+    Big thanks to [@Ankit152](https://github.com/Ankit152) for contributing this improvement!
 
 === "🎨 OpenEverest Rebranding"
     ### Complete rebranding to OpenEverest
@@ -86,7 +87,7 @@
 
 - [#1765](https://github.com/openeverest/openeverest/issues/1765): OpenEverest now includes a Pod Logs Viewer, allowing users to view real-time logs from database pods directly in the UI for easier troubleshooting and monitoring.
 
-- [#1817](https://github.com/openeverest/openeverest/issues/1817): LoadBalancerConfig annotations now support Go templating for dynamic value injection based on DatabaseCluster properties, enabling reusable configurations that automatically adapt to each cluster.
+- [#1817](https://github.com/openeverest/openeverest/issues/1817): LoadBalancerConfig annotations now support Go templating for dynamic value injection based on DatabaseCluster properties, enabling reusable configurations that automatically adapt to each cluster. (Thanks [@Ankit152](https://github.com/Ankit152)!)
 
 - OpenEverest now supports Percona XtraDB Cluster Operator v1.19.0.
 
