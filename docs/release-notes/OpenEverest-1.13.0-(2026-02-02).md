@@ -80,7 +80,7 @@
 
     OpenEverest now supports:
 
-    - Percona XtraDB Cluster Operator v1.19.0
+    - Percona Operator for MySQL based on Percona XtraDB Cluster (PXC) [v1.19.0](https://docs.percona.com/percona-operator-for-mysql/pxc/ReleaseNotes/Kubernetes-Operator-for-PXC-RN1.19.0.html)
 
 ## New features
 
