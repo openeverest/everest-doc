@@ -33,9 +33,13 @@ Here's how you can create a load balancer configuration:
 
     !!! note
         The **key** and **value** in a Load Balancer configuration for OpenEverest are derived from your Kubernetes environment and the load balancer implementation by your cloud provider.
+        
+        **Values support Go templating** for dynamic value injection. You can reference any field from the DatabaseCluster custom resource, such as `.ObjectMeta.Name`, `.ObjectMeta.Namespace`, or `.Spec.Engine.Version`.
 
     ??? example "Examples of keys and values used for Load balancer configuration"
 
+        **Static annotations:**
+        
         ```sh
         service.beta.kubernetes.io/aws-load-balancer-type: "nlb"                    # Use Network Load Balancer (NLB)
         service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"        # Internet-facing vs. internal
@@ -43,6 +47,33 @@ Here's how you can create a load balancer configuration:
         service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:..."        # Attach ACM SSL cert
         service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"                   # SSL termination ports
         service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"        # Protocol between LB and pods
+        ```
+        
+        **Dynamic annotations using Go templates:**
+        
+        ```sh
+        # ExternalDNS integration with unique hostname per cluster
+        external-dns.alpha.kubernetes.io/hostname: "{{ .ObjectMeta.Namespace }}-{{ .ObjectMeta.Name }}.example.org"
+        
+        # Custom annotation with database engine version
+        custom.annotation/db-version: "{{ .Spec.Engine.Version }}"
+        
+        # Combined static and dynamic values
+        custom.annotation/cluster-info: "db-{{ .ObjectMeta.Name }}-v{{ .Spec.Engine.Version }}"
+        ```
+        
+        **Example resolution:**
+        
+        When applied to a DatabaseCluster named `my-postgres` in namespace `production` running PostgreSQL version `16.0`, the template:
+        
+        ```
+        external-dns.alpha.kubernetes.io/hostname: "{{ .ObjectMeta.Namespace }}-{{ .ObjectMeta.Name }}-{{ .Spec.Engine.Version }}.example.org"
+        ```
+        
+        Resolves to:
+        
+        ```
+        external-dns.alpha.kubernetes.io/hostname: "production-my-postgres-16.0.example.org"
         ```
 
 7. Click **Save configuration**.

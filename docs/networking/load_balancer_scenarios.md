@@ -17,6 +17,8 @@ OpenEverest administrators can predefine load balancer configurations suitable f
 
 - It consists of a set of **key-value** pairs representing **annotations** that need to be applied to the appropriate load balancer.
 
+- Annotation values support **Go templating** syntax, allowing dynamic value injection based on the target DatabaseCluster's fields (such as `.ObjectMeta.Name`, `.ObjectMeta.Namespace`, `.Spec.Engine.Version`, etc.).
+
 
 After all required values are configured, the OpenEverest administrator saves the configuration to make it available for use throughout the platform.
 
@@ -84,6 +86,32 @@ After selecting a new load Balancer config, the user can save the changes:
         This change does not trigger a database restart.
 
 - If the user cancels the changes, no updates are applied.
+
+## Use Go templates for dynamic values
+
+Load balancer configurations support Go templating, enabling administrators to create reusable configurations that inject cluster-specific values dynamically.
+
+**Key characteristics:**
+
+- Templates are evaluated when the configuration is applied to a specific DatabaseCluster.
+- The entire `DatabaseCluster` custom resource is available as the template context.
+- Common fields include `.ObjectMeta.Name`, `.ObjectMeta.Namespace`, and `.Spec.Engine.Version`.
+
+**Example use case:**
+
+When integrating with ExternalDNS, you can define a single load balancer configuration that generates unique hostnames for each database cluster:
+
+```yaml
+external-dns.alpha.kubernetes.io/hostname: "{{ .ObjectMeta.Namespace }}-{{ .ObjectMeta.Name }}.example.org"
+```
+
+When applied to a DatabaseCluster named `my-postgres` in the `production` namespace, this template resolves to:
+
+```
+external-dns.alpha.kubernetes.io/hostname: "production-my-postgres.example.org"
+```
+
+This eliminates the need to create separate load balancer configurations for each database cluster.
 
 ## Manage load balancer configuration
 
