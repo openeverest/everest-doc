@@ -1,0 +1,21 @@
+name: Documentation Update
+description: Suggest improvements or fixes to the documentation
+labels: ["documentation"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What needs to be changed?
+      description: Briefly describe what is missing, unclear, or incorrect.
+      placeholder: The installation guide is missing steps for Windows...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested change (optional)
+      description: If you have a specific suggestion, describe it here.
+      placeholder: Add a section about...
+    validations:
+      required: false
