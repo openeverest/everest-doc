@@ -4,9 +4,9 @@ OpenEverest provides support for various operators and Kubernetes clusters. The 
 
 ## Operators
 
-* [Percona Operator for MySQL Based on Percona XtraDB Cluster (PXC)](https://docs.percona.com/percona-operator-for-mysql/pxc/) 1.17.0, 1.18.0
-* [Percona Operator for MongoDB (PSMDB)](https://docs.percona.com/percona-operator-for-mongodb/) 1.19.1, 1.21.1
-* [Percona Operator for PostgreSQL (PG)](https://docs.percona.com/percona-operator-for-postgresql/2.0/) 2.6.0, 2.7.0
+* [Percona Operator for MySQL Based on Percona XtraDB Cluster (PXC)](https://docs.percona.com/percona-operator-for-mysql/pxc/) 1.18.0, 1.19.0
+* [Percona Operator for MongoDB (PSMDB)](https://docs.percona.com/percona-operator-for-mongodb/) 1.21.2, 1.22.0
+* [Percona Operator for PostgreSQL (PG)](https://docs.percona.com/percona-operator-for-postgresql/2.0/) 2.7.0, 2.8.2
 
 ## k8s clusters
 
@@ -16,9 +16,9 @@ However, not all the many combinations of K8s distributions and K8s versions mig
 
 | Platform              | Kubernetes Version | State                                   |
 |:----------------------|:-------------------|:----------------------------------------|
-| Google GKE            | 1.31 - 1.33        | Fully tested and certified              |
-| Amazon EKS            | 1.31 - 1.33        | Fully tested and certified              |
-| OpenShift             | 4.16 - 4.18        | Fully tested and certified              |
+| Google GKE            | 1.32 - 1.33        | Fully tested and certified              |
+| Amazon EKS            | 1.32 - 1.34        | Fully tested and certified              |
+| OpenShift             | 4.17 - 4.20        | Fully tested and certified              |
 | Azure AKS             | -                  | Works but not fully certified yet       |
 | DigitalOcean          | -                  | Works but not fully certified yet       |
 | Vanilla K8s (kubeadm) | -                  | Works but not fully certified yet       |
