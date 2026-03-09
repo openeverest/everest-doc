@@ -73,8 +73,67 @@
 
 - OpenEverest Helm chart has been migrated to the community-driven [openeverest/helm-charts](https://github.com/openeverest/helm-charts) repository.
 
-## 🚀 Ready to Upgrade?
+## Improvements
 
-Upgrade to **OpenEverest 1.14.0** to access these new features and improvements.
+- [#1910](https://github.com/openeverest/openeverest/pull/1910): Increased the RSA key size used for signing authentication JWT tokens from 2048 to 4096 bits for enhanced security.
 
-📖 Explore our [Upgrade section](../upgrade/upgrade_with_helm.md) for the upgrade steps.
+## 🚀 Upgrade to OpenEverest 1.14.0
+
+Because this release migrates the OpenEverest Helm chart from the `percona` repository to the community-driven `openeverest` repository, the upgrade process requires an additional one-time migration step.
+
+Choose one of the following upgrade paths:
+
+=== "Using everestctl"
+
+    Upgrade using the latest version of `everestctl`. The CLI handles the Helm chart migration automatically.
+
+    Make sure you are running the latest version of `everestctl` before starting the upgrade.
+
+    📖 See the [Upgrade section](../upgrade/upgrade_with_cli.md) for the full steps.
+
+=== "Using Helm directly"
+
+    If you prefer to upgrade using Helm, follow these steps to migrate your existing releases from the `percona` Helm repository to the `openeverest` repository and upgrade them.
+    {.power-number}
+
+    1. Add the new OpenEverest Helm repository and update your local cache:
+
+        ```sh
+        helm repo add openeverest https://openeverest.github.io/helm-charts/
+        helm repo update
+        ```
+
+    2. Upgrade the CRDs:
+
+        ```sh
+        helm upgrade --install everest-crds \
+            openeverest/everest-crds \
+            --namespace everest-system \
+            --take-ownership
+        ```
+
+    3. Upgrade each release to re-associate it with the new `openeverest` chart:
+
+        Upgrade the core components release:
+
+        ```sh
+        helm upgrade everest-core openeverest/openeverest \
+          --namespace everest-system \
+          --reuse-values
+        ```
+
+        If you have one or more database namespace releases, upgrade each one:
+
+        ```sh
+        helm upgrade <RELEASE_NAME> openeverest/everest-db-namespace \
+          --namespace <DB_NAMESPACE> \
+          --reuse-values
+        ```
+
+        Replace `<RELEASE_NAME>` and `<DB_NAMESPACE>` with your actual release name and namespace. To list all your current releases, run `helm list --all-namespaces`.
+
+    4. (Optional) Remove the old Percona Helm repository:
+
+        ```sh
+        helm repo remove percona
+        ```

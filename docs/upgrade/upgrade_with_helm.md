@@ -45,7 +45,7 @@ To migrate, run the following commands:
     Upgrade the core components release:
 
     ```sh
-    helm upgrade everest openeverest/openeverest \
+    helm upgrade everest-core openeverest/openeverest \
       --namespace everest-system \
       --reuse-values
     ```
