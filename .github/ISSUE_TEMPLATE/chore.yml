@@ -1,0 +1,22 @@
+name: Chore
+description: Maintenance tasks, dependency upgrades, tooling changes
+title: "[Chore] "
+labels: ["chore"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What needs to be done?
+      description: Describe the maintenance task or upgrade needed.
+      placeholder: Upgrade MkDocs to version X, update CI workflow...
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is this needed?
+      description: Brief explanation of the benefit or reason.
+      placeholder: Security patch, new features, deprecated dependency...
+    validations:
+      required: false
