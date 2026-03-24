@@ -9,6 +9,14 @@
 
 {% block extrahead %}
 {{ super() }}
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JNB0XD7Y6M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JNB0XD7Y6M');
+</script>
 {% set title = config.site_name %}
 {% if page and page.meta and page.meta.title %}
 {% set title = title ~ " - " ~ page.meta.title %}
