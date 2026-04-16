@@ -36,10 +36,10 @@ You can install OpenEverest using one of the following methods:
 Once you’ve installed OpenEverest, you can easily log into the OpenEverest UI by following the setup instructions in the next section.
 
 !!! important
-    OpenEverest assists with installing all the necessary operators and required packages, but does not currently help with spinning up a publicly accessible Kubernetes cluster.
+    OpenEverest assists with installing all the necessary operators and required packages, but does not currently help with spinning up a Kubernetes cluster.
 
-We recommend setting up OpenEverest on the Amazon Elastic Kubernetes Service (EKS) or Google Kubernetes Engine (GKE). OpenEverest may not work as expected on local Kubernetes installations (minikube, kind, k3d, or similar products) due to network issues.
-   
+OpenEverest is designed to run on any CNCF-conformant Kubernetes cluster, whether managed by a cloud provider or self-hosted on-premises. See [Supported Kubernetes versions](supported_operators_k8s.md) for the list of tested versions.
+
 [Create EKS cluster :material-arrow-right:](eks.md){.md-button}  [Create GKE cluster :material-arrow-right:](gke.md){.md-button}
 
 
