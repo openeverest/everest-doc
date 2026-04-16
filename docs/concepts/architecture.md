@@ -42,4 +42,4 @@ The **OpenEverest Operator** acts as an *operator of operators*. When a user cre
 
 **Database Operators** are Kubernetes Operators created by various open-source communities and vendors. They manage the lifecycle of a specific database engine — handling replication, failover, configuration, backups, and more according to each engine's requirements.
 
-OpenEverest is designed to be modular: new database technologies can be added by integrating a new Operator, without changes to the core platform. The currently supported engines are listed on the [supported operators](install/supported_operators_k8s.md) page.
+OpenEverest is designed to be modular: new database technologies can be added by integrating a new Operator, without changes to the core platform. The currently supported engines are listed on the [supported operators](../install/supported_operators_k8s.md) page.
