@@ -6,7 +6,7 @@ OpenEverest is an open-source platform for automated database provisioning and m
 
 At the heart of OpenEverest is a deliberate bet on **Kubernetes Operators** as the primary building block for deploying and managing stateful workloads.
 
-![!image](images/operator-architecture.png)
+![!image](../images/operator-architecture.png)
 
 A Kubernetes Operator is a software extension that uses custom resources to manage applications and their components. Operators encode operational knowledge — the same knowledge a human expert would use to deploy, configure, scale, and recover a specific piece of software.
 
@@ -25,7 +25,7 @@ Beyond automation, database Operators carry built-in domain expertise. They don'
 
 OpenEverest is composed of three main components that work together to give users a single pane of glass over their database fleet.
 
-![!image](images/openeverest-architecture.png)
+![!image](../images/openeverest-architecture.png)
 
 ### OpenEverest Server
 
