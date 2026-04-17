@@ -1,6 +1,6 @@
-# Supported operators and K8s clusters
+# Supported operators and Kubernetes versions
 
-OpenEverest provides support for various operators and Kubernetes clusters. The following is a list of the specific operators and Kubernetes clusters that are compatible with OpenEverest:
+OpenEverest is designed to run on any CNCF-conformant Kubernetes cluster — cloud-managed or self-hosted. This page lists the database operators bundled with OpenEverest and the Kubernetes versions that are tested and supported.
 
 ## Operators
 
@@ -8,21 +8,25 @@ OpenEverest provides support for various operators and Kubernetes clusters. The 
 * [Percona Operator for MongoDB (PSMDB)](https://docs.percona.com/percona-operator-for-mongodb/) 1.21.2, 1.22.0
 * [Percona Operator for PostgreSQL (PG)](https://docs.percona.com/percona-operator-for-postgresql/2.0/) 2.7.0, 2.8.2
 
-## k8s clusters
+## Supported Kubernetes versions
 
-OpenEverest works on most of the cloud K8s and on most of the on-prem vanilla K8s.
+Each minor release of OpenEverest is tested against a range of Kubernetes versions — generally the minor versions actively supported by the CNCF at the time of the OpenEverest release.
 
-However, not all the many combinations of K8s distributions and K8s versions might be fully tested and certified. Refer to the matrix below and [reach out to us](SetupPrereqs.md#get-expert-help) should you have any questions.
+The currently supported Kubernetes versions are **1.33 – 1.35**.
 
-| Platform              | Kubernetes Version | State                                   |
-|:----------------------|:-------------------|:----------------------------------------|
-| Google GKE            | 1.32 - 1.33        | Fully tested and certified              |
-| Amazon EKS            | 1.32 - 1.34        | Fully tested and certified              |
-| OpenShift             | 4.17 - 4.20        | Fully tested and certified              |
-| Azure AKS             | -                  | Works but not fully certified yet       |
-| DigitalOcean          | -                  | Works but not fully certified yet       |
-| Vanilla K8s (kubeadm) | -                  | Works but not fully certified yet       |
-| Other cloud K8s       | -                  | Should work but not fully certified yet |
+For reference, the CNCF support window and the list of actively maintained Kubernetes minor versions can be found on the [Kubernetes releases page :octicons-link-external-16:](https://kubernetes.io/releases/).
+
+## Supported platforms
+
+OpenEverest runs on any CNCF-conformant Kubernetes distribution. The following platforms are regularly used by the community and the maintainers:
+
+- Cloud-managed Kubernetes (EKS, GKE, AKS, and equivalents)
+- OpenShift
+- Vanilla Kubernetes (kubeadm)
+- On-premises distributions
 
 !!! note
-    Air-gapped environments (i.e. environments physically isolated from unsecured networks such as the public Internet) are not currently supported. Their support is coming soon.
+    Air-gapped environments are not currently supported. Support is planned for a future release.
+
+!!! note
+    Local development clusters (minikube, kind, k3d) may work for evaluation purposes but are not tested for production use cases due to networking and storage constraints.
