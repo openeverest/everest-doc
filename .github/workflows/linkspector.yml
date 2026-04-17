@@ -1,0 +1,19 @@
+name: Linkspector
+on: [pull_request]
+
+jobs:
+  check-links:
+    name: linkspector
+    runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Run linkspector
+        uses: umbrelladocs/action-linkspector@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          fail_level: error
+          filter_mode: nofilter
