@@ -10,7 +10,7 @@
 
 All OpenEverest images are now published as multi-arch manifests to `ghcr.io`, covering both AMD64 and ARM64. No configuration changes are needed — if you run an ARM-based Kubernetes cluster, the right image is pulled automatically. This opens up deployment on AWS Graviton instances, Apple Silicon Macs for development, or — why not — a Raspberry Pi cluster at home.
 
-### everestctl Status Command
+### everestctl status Command
 
 A new `everestctl status` command has been added for health checking Everest components. This provides a quick way to verify that all required operators and services are running correctly in your cluster.
 
