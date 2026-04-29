@@ -150,6 +150,41 @@ extra:
 
 nav:
   - Welcome to OpenEverest: index.md
+<<<<<<< HEAD
+=======
+  - get-help.md
+  - Release Notes:
+      - Release notes index: release-notes/release_notes_index.md
+      - OpenEverest-1.15.0-(2026-04-29): release-notes/OpenEverest-1.15.0-(2026-04-29).md
+      - OpenEverest-1.14.0-(2026-03-10): release-notes/OpenEverest-1.14.0-(2026-03-10).md
+      - OpenEverest-1.13.0-(2026-02-04): release-notes/OpenEverest-1.13.0-(2026-02-04).md
+      - Percona-Everest-1.12.0-(2026-01-19): release-notes/Percona-Everest-1.12.0-(2026-01-19).md
+      - Percona-Everest-1.11.0-(2026-01-12): release-notes/Percona-Everest-1.11.0-(2026-01-12).md
+      - Percona-Everest 1.10.0 (2025-11-28): release-notes/Percona-Everest-1.10.0-(2025-11-28).md
+      - Percona-Everest 1.9.0 (2025-09-23): release-notes/Percona-Everest-1.9.0-(2025-09-23).md
+      - Percona-Everest 1.8.1 (2025-08-11): release-notes/Percona-Everest-1.8.1-(2025-08-11).md
+      - Percona-Everest 1.8.0 (2025-07-16): release-notes/Percona-Everest-1.8.0-(2025-07-16).md
+      - Percona-Everest 1.7.0 (2025-05-29): release-notes/Percona-Everest-1.7.0-(2025-05-29).md
+      - Percona-Everest 1.6.0 (2025-04-16): release-notes/Percona-Everest-1.6.0-(2025-04-16).md
+      - Percona-Everest 1.5.0 (2025-04-03): release-notes/Percona-Everest-1.5.0-(2025-03-04).md
+      - Percona-Everest 1.4.0 (2025-01-07): release-notes/Percona-Everest-1.4.0-(2025-01-07).md
+      - Percona-Everest 1.3.0 (2024-11-18): release-notes/Percona-Everest-1.3.0-(2024-11-18).md
+      - Percona-Everest 1.2.0 (2024-10-01): release-notes/Percona-Everest-1.2.0-(2024-10-01).md
+      - Percona-Everest 1.1.1 (2024-08-22): release-notes/Percona-Everest-1.1.1-(2024-08-22).md
+      - Percona-Everest 1.1.0 (2024-08-12): release-notes/Percona-Everest-1.1.0-(2024-08-12).md
+      - Percona-Everest 1.0.1 (2024-07-08): release-notes/Percona-Everest-1.0.1-(2024-07-08).md
+      - Percona-Everest 1.0.0 (2024-06-28): release-notes/Percona-Everest-1.0.0-(2024-06-28).md
+      - Percona-Everest 0.10.1 (2024-05-23): release-notes/Percona-Everest-0.10.1-(2024-05-23).md
+      - Percona Everest 0.10.0 (2024-05-03): release-notes/Percona-Everest-0.10.0-(2024-05-03).md
+      - Percona Everest 0.9.1 (2024-04-02): release-notes/Percona-Everest-0.9.1-(2024-04-02).md
+      - Percona Everest 0.9.0 (2024-04-01): release-notes/Percona-Everest-0.9.0-(2024-04-01).md
+      - Percona Everest 0.8.0 (2024-02-22): release-notes/Percona-Everest-0.8.0-(2024-02-22).md
+      - Percona Everest 0.7.0 (2024-01-31): release-notes/Percona-Everest-0.7.0-(2024-01-31).md
+      - Percona Everest 0.6.0 (2024-01-11): release-notes/Percona-Everest-0.6.0-(2024-01-11).md
+      - Percona Everest 0.5.0 (2023-11-28): release-notes/Percona-Everest-0.5.0-(2023-11-28).md      
+      - Percona Everest 0.4.0 (2023-10-30): release-notes/Percona-Everest-0.4.0-(2023-10-30).md      
+  - Features: features.md
+>>>>>>> a988bb0fb23272ae1bb55a12373de8261faebba5
   - Quickstart guide: quick-install.md
   - Concepts:
       - Features: features.md
