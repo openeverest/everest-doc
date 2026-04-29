@@ -153,6 +153,7 @@ nav:
   - get-help.md
   - Release Notes:
       - Release notes index: release-notes/release_notes_index.md
+      - OpenEverest-1.15.0-(2026-04-29): release-notes/OpenEverest-1.15.0-(2026-04-29).md
       - OpenEverest-1.14.0-(2026-03-10): release-notes/OpenEverest-1.14.0-(2026-03-10).md
       - OpenEverest-1.13.0-(2026-02-04): release-notes/OpenEverest-1.13.0-(2026-02-04).md
       - Percona-Everest-1.12.0-(2026-01-19): release-notes/Percona-Everest-1.12.0-(2026-01-19).md
