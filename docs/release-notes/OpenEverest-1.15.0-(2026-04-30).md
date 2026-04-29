@@ -14,6 +14,21 @@ All OpenEverest images are now published as multi-arch manifests to `ghcr.io`, c
 
 A new `everestctl status` command has been added for health checking Everest components. This provides a quick way to verify that all required operators and services are running correctly in your cluster.
 
+```
+$ everestctl status
+❌ Everest v1.15.0 has issues
+
+Components:
+  NAME                NAMESPACE           STATUS       MESSAGE
+  everest-server      everest-system      ❌ Not Ready  0/1 ready
+  everest-operator    everest-system      ❌ Not Ready  0/1 ready
+  catalog-operator    everest-olm         ❌ Not Ready  0/1 ready
+  olm-operator        everest-olm         ❌ Not Ready  0/1 ready
+  packageserver       everest-olm         ❌ Not Ready  0/2 ready
+  vm-operator         everest-monitoring  ✅ Ready      
+  kube-state-metrics  everest-monitoring  ✅ Ready      
+```
+
 ### Backup Size Visibility in UI
 
 The web UI now displays backup sizes for MongoDB clusters directly in the backup list view, making it easier to monitor storage usage and identify large backups at a glance.
