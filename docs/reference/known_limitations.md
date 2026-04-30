@@ -57,12 +57,6 @@ Here are the limitations for OpenEverest:
 
 - After you enable sharding for a cluster, you need to take another backup to ensure you can restore. 
 
-- Since MongoDB sharding is in Tech Preview, there may be issues with backups and restores. Therefore, using sharded PSMDB clusters in production environments is not recommended.
-
-    -  If your restore fails or is stuck, use this **workaround**: 
-
-        On the OpenEverest UI, navigate to the **Restores** tab, locate the latest restore object, click `...`, and delete it. Then, attempt to restore it again.
-
 ## Manual storage scaling
 
 - When manually scaling storage in OpenEverest, resource quotas are not automatically validated during the volume expansion process. If the requested storage exceeds the defined quota, the PVC resize operation will fail, leaving the database in the **Resizing Volumes** state.
