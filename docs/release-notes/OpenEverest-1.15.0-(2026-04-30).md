@@ -58,7 +58,7 @@ The Helm charts now support advanced Kubernetes scheduling with `nodeSelector`, 
 - [#2010](https://github.com/openeverest/openeverest/issues/2010): `everestctl status` command for health checking Everest components.
 - [#2044](https://github.com/openeverest/openeverest/issues/2044): Backup size display for MongoDB clusters in the web UI.
 - [#2008](https://github.com/openeverest/openeverest/issues/2008): Added `storage` field to the `DatabaseCluster` proxy spec, enabling persistent volume configuration for ProxySQL.
-- Advanced scheduling controls (`nodeSelector`, `tolerations`, `affinity`, `topologySpreadConstraints`) for server and operator Helm chart deployments.
+- [helm-charts#11](https://github.com/openeverest/helm-charts/issues/11)Advanced scheduling controls (`nodeSelector`, `tolerations`, `affinity`, `topologySpreadConstraints`) for server and operator Helm chart deployments.
 - [helm-charts#23](https://github.com/openeverest/helm-charts/issues/23): `LoadBalancerClass` support for the Everest server service in Helm charts.
 - [helm-charts#27](https://github.com/openeverest/helm-charts/issues/27): Air-gapped upgrade support in Helm charts via a pre-built `everestctl` image, allowing upgrades in offline or internal network environments.
 - [#2022](https://github.com/openeverest/openeverest/issues/2022): Artifact Hub badge for Helm chart discovery.
