@@ -1,6 +1,7 @@
 # OpenEverest release notes index
 
 
+- [OpenEverest 1.15.0 (2026-04-30)](OpenEverest-1.15.0-(2026-04-30).md)
 - [OpenEverest 1.14.0 (2026-03-10)](OpenEverest-1.14.0-(2026-03-10).md)
 - [OpenEverest 1.13.0 (2026-02-04)](OpenEverest-1.13.0-(2026-02-04).md)
 - [Percona-Everest 1.12.0 (2026-01-19)](Percona-Everest-1.12.0-(2026-01-19).md)

@@ -6,13 +6,13 @@ OpenEverest is designed to run on any CNCF-conformant Kubernetes cluster — clo
 
 * [Percona Operator for MySQL Based on Percona XtraDB Cluster (PXC)](https://docs.percona.com/percona-operator-for-mysql/pxc/) 1.18.0, 1.19.0
 * [Percona Operator for MongoDB (PSMDB)](https://docs.percona.com/percona-operator-for-mongodb/) 1.21.2, 1.22.0
-* [Percona Operator for PostgreSQL (PG)](https://docs.percona.com/percona-operator-for-postgresql/2.0/) 2.7.0, 2.8.2
+* [Percona Operator for PostgreSQL (PG)](https://docs.percona.com/percona-operator-for-postgresql/2.0/) 2.8.2, 2.9.0
 
 ## Supported Kubernetes versions
 
 Each minor release of OpenEverest is tested against a range of Kubernetes versions — generally the minor versions actively supported by the CNCF at the time of the OpenEverest release.
 
-The currently supported Kubernetes versions are **1.33 – 1.35**.
+The currently supported Kubernetes versions are **1.33 – 1.36**.
 
 For reference, the CNCF support window and the list of actively maintained Kubernetes minor versions can be found on the [Kubernetes releases page :octicons-link-external-16:](https://kubernetes.io/releases/).
 
