@@ -28,8 +28,18 @@ everestctl upgrade
 
 ### Using Helm directly
 
+Start with an update of Custom Resource Definitions (CRDs):
 ```sh
-helm repo update openeverest
+helm repo update
+helm upgrade --install everest-crds \
+    openeverest/everest-crds \
+    --namespace everest-system \
+    --take-ownership
+```
+
+Update OpenEverest itself:
+
+```sh
 helm upgrade everest openeverest/everest -n everest-system
 ```
 
