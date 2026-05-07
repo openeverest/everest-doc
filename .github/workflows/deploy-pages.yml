@@ -1,0 +1,87 @@
+name: Deploy Docs to GitHub Pages
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to deploy (e.g. 1.15.1)'
+        required: false
+      backfill:
+        description: 'Backfill ALL historical tags? (one-time setup)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install wheel
+          pip install -r requirements.txt
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Backfill all historical versions
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.backfill }}
+        run: |
+          for tag in $(git tag -l 'v*' | sort -V); do
+            version="${tag#v}"
+            echo "Deploying historical version: $version"
+            git checkout "$tag"
+            mike deploy "$version" --update-aliases --branch gh-pages --push
+          done
+          git checkout main
+
+      - name: Determine version
+        id: version
+        if: ${{ !inputs.backfill }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "VERSION=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            VERSION="${{ github.ref_name }}"
+            VERSION="${VERSION#v}"
+            echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy with mike
+        if: ${{ !inputs.backfill }}
+        run: |
+          mike deploy ${{ steps.version.outputs.VERSION }} \
+            --push \
+            --update-aliases \
+            --branch gh-pages
+
+      - name: Set as default
+        if: ${{ !inputs.backfill }}
+        run: |
+          mike set-default ${{ steps.version.outputs.VERSION }} \
+            --push \
+            --branch gh-pages
