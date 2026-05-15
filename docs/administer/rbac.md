@@ -84,6 +84,7 @@ Below is a comprehensive table outlining the permissions available for various *
     | database-cluster-restores|You can view database cluster restores| You can create database cluster restores|You can modify database cluster restores| You can delete database cluster restores|
     | backup-storages and monitoring-instances |You can view backups and monitoring endpoints| You can create backups and monitoring endpoints|You can modify backups and monitoring endpoints| You can delete backups and monitoring endpoints|
     | database-cluster-credentials|View database data (credentials) </br> </br>**Note**: If no policy is defined:</br> * You cannot see the credentials and the connection string.</br> * You also cannot create a database from any backup.| :x: |:x:| :x:|
+    | load-balancer-configs |You can view load balancer configs| :x: |:x:| :x:|
 
 
     ### Key considerations for RBAC
@@ -108,6 +109,10 @@ Below is a comprehensive table outlining the permissions available for various *
     === "Backups"
     
         For on-demand backups and schedules, you should grant `read` permissions for `backup storages` as well.
+
+    === "Load balancer configs"
+
+        If a database cluster uses a load balancer config, users must have `read` permissions for `load-balancer-configs` to view that database cluster.
 
 
     === "Restores"
@@ -152,6 +157,7 @@ p, role:admin, database-cluster-restores, *, */*
 p, role:admin, database-cluster-credentials, *, */*
 p, role:admin, backup-storages, *, */*
 p, role:admin, monitoring-instances, *, */*
+p, role:admin, load-balancer-configs, *, *
 ```
 
 
@@ -208,6 +214,7 @@ In this section, we will explore some examples that demonstrate how to create po
         p, role:readonly, database-cluster-restores, read, */*
         p, role:readonly, backup-storages, read, */*
         p, role:readonly, monitoring-instances, read, */*
+        p, role:readonly, load-balancer-configs, read, *
         ```
         
         ??? info "Let's dive into decoding this!"
@@ -221,6 +228,7 @@ In this section, we will explore some examples that demonstrate how to create po
             - **Database cluster restores**: `Read` access
             - **Backup storages**: `Read` access
             - **Monitoring instances**: `Read` access
+            - **Load balancer configs**: `Read` access
             
             
         **2. Read only role with access to the database credentials**
@@ -236,6 +244,7 @@ In this section, we will explore some examples that demonstrate how to create po
         p, role:readonlywithcreds, backup-storages, read, */*
         p, role:readonlywithcreds, monitoring-instances, read, */*
         p, role:readonlywithcreds, database-cluster-credentials, read, */*
+        p, role:readonlywithcreds, load-balancer-configs, read, *
         ```
 
         ??? info "Let's dive into decoding this!"
@@ -250,6 +259,7 @@ In this section, we will explore some examples that demonstrate how to create po
             - **Backup storages**: `Read` access
             - **Monitoring instances**: `Read` access
             - **Database clusters credentials**: `Read` acccess
+            - **Load balancer configs**: `Read` access
 
 
     === "Database admin role" 
