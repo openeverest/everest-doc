@@ -84,7 +84,8 @@ Below is a comprehensive table outlining the permissions available for various *
     | database-cluster-restores|You can view database cluster restores| You can create database cluster restores|You can modify database cluster restores| You can delete database cluster restores|
     | backup-storages and monitoring-instances |You can view backups and monitoring endpoints| You can create backups and monitoring endpoints|You can modify backups and monitoring endpoints| You can delete backups and monitoring endpoints|
     | database-cluster-credentials|View database data (credentials) </br> </br>**Note**: If no policy is defined:</br> * You cannot see the credentials and the connection string.</br> * You also cannot create a database from any backup.| :x: |:x:| :x:|
-    | load-balancer-configs |You can view load balancer configs| :x: |:x:| :x:|
+    | load-balancer-configs |You can view load balancer configs| You can create load balancer configs|You can modify load balancer configs| You can delete load balancer configs|
+    | pod-scheduling-policies |You can view pod scheduling policies| You can create pod scheduling policies|You can modify pod scheduling policies| You can delete pod scheduling policies|
 
 
     ### Key considerations for RBAC
@@ -112,8 +113,7 @@ Below is a comprehensive table outlining the permissions available for various *
 
     === "Load balancer configs"
 
-        If a database cluster uses a load balancer config, users must have `read` permissions for `load-balancer-configs` to view that database cluster.
-
+        If a database cluster uses a load balancer config, you must have `read` permissions for `load-balancer-configs` to view that database cluster.
 
     === "Restores"
 
@@ -184,6 +184,8 @@ In this section, we will explore some examples that demonstrate how to create po
         p, role:namespaceAadmin, database-cluster-credentials, *, namespaceA/*
         p, role:namespaceAadmin, backup-storages, *, namespaceA/*
         p, role:namespaceAadmin, monitoring-instances, *, namespaceA/*
+        p, role:namespaceAadmin, load-balancer-configs, *, *
+        p, role:namespaceAadmin, pod-scheduling-policies, *, *
         ```
 
         ??? info "Let's dive into decoding this!"
@@ -198,6 +200,8 @@ In this section, we will explore some examples that demonstrate how to create po
             - **Database clusters credentials**: `Read` acccess
             - **Backup storages**: `All` access (read, create, update, delete)
             - **Monitoring instances**: `All` access (read, create, update, delete)
+            - **Load balancer configs**: `All` access (read, create, update, delete)
+            - **Pod scheduling policies**: `All` access (read, create, update, delete)
             
 
     === "Read only role" 
@@ -215,6 +219,7 @@ In this section, we will explore some examples that demonstrate how to create po
         p, role:readonly, backup-storages, read, */*
         p, role:readonly, monitoring-instances, read, */*
         p, role:readonly, load-balancer-configs, read, *
+        p, role:readonly, pod-scheduling-policies, read, *
         ```
         
         ??? info "Let's dive into decoding this!"
@@ -229,6 +234,7 @@ In this section, we will explore some examples that demonstrate how to create po
             - **Backup storages**: `Read` access
             - **Monitoring instances**: `Read` access
             - **Load balancer configs**: `Read` access
+            - **Pod scheduling policies**: `Read` access
             
             
         **2. Read only role with access to the database credentials**
@@ -245,6 +251,7 @@ In this section, we will explore some examples that demonstrate how to create po
         p, role:readonlywithcreds, monitoring-instances, read, */*
         p, role:readonlywithcreds, database-cluster-credentials, read, */*
         p, role:readonlywithcreds, load-balancer-configs, read, *
+        p, role:readonlywithcreds, pod-scheduling-policies, read, *
         ```
 
         ??? info "Let's dive into decoding this!"
@@ -260,6 +267,7 @@ In this section, we will explore some examples that demonstrate how to create po
             - **Monitoring instances**: `Read` access
             - **Database clusters credentials**: `Read` acccess
             - **Load balancer configs**: `Read` access
+            - **Pod scheduling policies**: `Read` access
 
 
     === "Database admin role" 
