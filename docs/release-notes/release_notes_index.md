@@ -1,6 +1,7 @@
 # OpenEverest release notes index
 
 
+- [OpenEverest 2.0.0 Developer Preview (2026-05-22)](OpenEverest-2.0.0-dev-(2026-05-22).md)
 - [OpenEverest 1.15.1 (2026-05-01)](OpenEverest-1.15.1-(2026-05-01).md)
 - [OpenEverest 1.15.0 (2026-04-30)](OpenEverest-1.15.0-(2026-04-30).md)
 - [OpenEverest 1.14.0 (2026-03-10)](OpenEverest-1.14.0-(2026-03-10).md)
