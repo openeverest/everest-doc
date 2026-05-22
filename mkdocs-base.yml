@@ -156,6 +156,11 @@ nav:
       - OpenEverest architecture: concepts/architecture.md
       - Running databases on Kubernetes: concepts/databases-on-kubernetes.md
     
+  - Extend OpenEverest:
+      - Overview: extend/index.md
+      - Providers: extend/providers.md
+      - Generic Plugins: extend/generic-plugins.md
+
   - Install:
     - Setup and prerequisites:
       - install/prerequisites.md
