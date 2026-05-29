@@ -1,7 +1,7 @@
-# What's new in OpenEverest 2.0.0 Developer Preview
+# What's new in OpenEverest 2.0.0 Developer Preview 1
 
 !!! warning "Developer Preview — not for production"
-    OpenEverest 2.0.0 Developer Preview is an early-look release and is **not feature-complete**. It is intended for testing and feedback only. Breaking changes — including API updates — are expected as we move toward General Availability.
+    OpenEverest 2.0.0 Developer Preview 1 is an early-look release and is **not feature-complete**. It is intended for testing and feedback only. Breaking changes — including API updates — are expected as we move toward General Availability.
 
     There is **no supported upgrade path from v1**. The two versions have fundamentally different architectures and data models. Running v1 and v2 side-by-side in the same cluster is not supported.
 
@@ -129,7 +129,7 @@ As new providers are added, their UI surfaces appear automatically — no fronte
 
 ---
 
-## Installing OpenEverest 2.0.0 Developer Preview
+## Installing OpenEverest 2.0.0 Developer Preview 1
 
 OpenEverest v2 is installed via Helm. You will need a running Kubernetes cluster and `helm` installed.
 
