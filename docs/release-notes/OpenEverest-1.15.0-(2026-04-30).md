@@ -56,7 +56,7 @@ The Helm charts now support advanced Kubernetes scheduling with `nodeSelector`, 
 - [operator#942](https://github.com/openeverest/openeverest-operator/pull/942): Support for Percona Operator for PostgreSQL 2.9.0.
 - [#1998](https://github.com/openeverest/openeverest/issues/1998), [#1921](https://github.com/openeverest/openeverest/issues/1921): ARM64 architecture support for all components.
 - [#2010](https://github.com/openeverest/openeverest/issues/2010): `everestctl status` command for health checking Everest components.
-- [#2044](https://github.com/openeverest/openeverest/issues/2044): Backup size display for MongoDB clusters in the web UI.
+- [#2044](https://github.com/openeverest/openeverest/issues/2044): Backup size display for MongoDB clusters in the web UI. Contributed by [@adipimpalkar](https://github.com/adipimpalkar).
 - [#2008](https://github.com/openeverest/openeverest/issues/2008): Added `storage` field to the `DatabaseCluster` proxy spec, enabling persistent volume configuration for ProxySQL.
 - [helm-charts#11](https://github.com/openeverest/helm-charts/issues/11): Advanced scheduling controls (`nodeSelector`, `tolerations`, `affinity`, `topologySpreadConstraints`) for server and operator Helm chart deployments.
 - [helm-charts#23](https://github.com/openeverest/helm-charts/issues/23): `LoadBalancerClass` support for the Everest server service in Helm charts.
@@ -66,8 +66,8 @@ The Helm charts now support advanced Kubernetes scheduling with `nodeSelector`, 
 - [#2013](https://github.com/openeverest/openeverest/issues/2013), [#2027](https://github.com/openeverest/openeverest/issues/2027): OpenSSF Scorecard badge and security tracking.
 - [#1950](https://github.com/openeverest/openeverest/issues/1950): Sync guards for PSMDB and DB operator manifests.
 - [#1951](https://github.com/openeverest/openeverest/issues/1951): GOVERNANCE.md pointing to the governance repository.
-- [#2064](https://github.com/openeverest/openeverest/issues/2064): Added missing prerequisites to the dev setup guide.
-- [#2056](https://github.com/openeverest/openeverest/issues/2056): Documented port 5000 conflict for k3d registry on macOS.
+- [#2064](https://github.com/openeverest/openeverest/issues/2064): Added missing prerequisites to the dev setup guide. Contributed by [@hrmnp8](https://github.com/hrmnp8).
+- [#2056](https://github.com/openeverest/openeverest/issues/2056): Documented port 5000 conflict for k3d registry on macOS. Contributed by [@sujalshah-bit](https://github.com/sujalshah-bit).
 - [#1960](https://github.com/openeverest/openeverest/issues/1960): Added testing guidelines to CONTRIBUTING.md.
 - [#1994](https://github.com/openeverest/openeverest/issues/1994): Added community meeting section to the documentation.
 - [#1954](https://github.com/openeverest/openeverest/issues/1954): Added signing requirements to CONTRIBUTING.md.
@@ -75,8 +75,8 @@ The Helm charts now support advanced Kubernetes scheduling with `nodeSelector`, 
 ### Changed & Improved
 
 - [#2020](https://github.com/openeverest/openeverest/issues/2020): Updated to Go 1.26 and switched to Alpine-based container images.
-- [#2041](https://github.com/openeverest/openeverest/issues/2041): Container base images pinned by digest for reproducible and auditable builds.
-- [#1925](https://github.com/openeverest/openeverest/issues/1925): Added lazy loading for UI route pages, reducing the initial bundle size and improving page load times.
+- [#2041](https://github.com/openeverest/openeverest/issues/2041): Container base images pinned by digest for reproducible and auditable builds. Contributed by [@ankitkurmi152](https://github.com/ankitkurmi152).
+- [#1925](https://github.com/openeverest/openeverest/issues/1925): Added lazy loading for UI route pages, reducing the initial bundle size and improving page load times. Contributed by [@crby84](https://github.com/crby84).
 - [#1928](https://github.com/openeverest/openeverest/issues/1928): Optimized the Tilt development environment by caching DB operator manifests and Helm packages, removing redundant operator-init steps, and fixing image paths after the Helm chart move.
 - [#1936](https://github.com/openeverest/openeverest/issues/1936), [#1952](https://github.com/openeverest/openeverest/issues/1952), [#1943](https://github.com/openeverest/openeverest/issues/1943): Automated copyright header management with `make copyright-headers` and `make copyright-check` commands, a `.copyrightignore` file, and a CI workflow that checks headers without modifying files.
 - [#1950](https://github.com/openeverest/openeverest/issues/1950): Moved CODE_OF_CONDUCT.md to the repository root with a link to the governance repository.
@@ -84,7 +84,7 @@ The Helm charts now support advanced Kubernetes scheduling with `nodeSelector`, 
 ### Fixed
 
 - [operator#938](https://github.com/openeverest/openeverest-operator/issues/938): Fixed panic (`assignment to entry in nil map`) when creating a `DatabaseCluster` with `proxy.type: proxysql`. Also fixed a copy-paste error that caused ProxySQL resource requests to be read from HAProxy's spec.
-- [#1953](https://github.com/openeverest/openeverest/issues/1953): Fixed worker node filtering to recognize the `node-role.kubernetes.io/control-plane` taint used in newer Kubernetes versions, in addition to the legacy `master` taint.
+- [#1953](https://github.com/openeverest/openeverest/issues/1953): Fixed worker node filtering to recognize the `node-role.kubernetes.io/control-plane` taint used in newer Kubernetes versions, in addition to the legacy `master` taint. Contributed by [@konglyyy](https://github.com/konglyyy).
 - [#1956](https://github.com/openeverest/openeverest/issues/1956): Fixed RBAC model import path that broke under Vite 5+ in dev mode by moving the file out of the `public` directory.
 - [#2062](https://github.com/openeverest/openeverest/issues/2062): Fixed incorrect `singular` field name in the Storage CRD (`storages` to `storage`).
 - [#1917](https://github.com/openeverest/openeverest/issues/1917): Fixed button not fitting screen in the UI.
@@ -106,8 +106,18 @@ everestctl upgrade
 
 ### Using Helm directly
 
+Start with an update of Custom Resource Definitions (CRDs):
 ```sh
-helm repo update openeverest
+helm repo update
+helm upgrade --install everest-crds \
+    openeverest/everest-crds \
+    --namespace everest-system \
+    --take-ownership
+```
+
+Update OpenEverest itself:
+
+```sh
 helm upgrade everest openeverest/everest -n everest-system
 ```
 

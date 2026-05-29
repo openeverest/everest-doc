@@ -230,6 +230,7 @@ nav:
       - Database view: use/database_view.md
       - Provision a database: use/db_provision.md
       - Manage clusters: use/cluster-management.md
+      - Pause and resume databases: use/pause_resume.md
       - MongoDB sharding: use/mongo_sharding.md
       - Scale database deployment: use/scaling.md
       - Manual storage scaling: use/manual_storage_scaling.md
@@ -266,6 +267,7 @@ nav:
 
   - Release Notes:
       - Release notes index: release-notes/release_notes_index.md
+      - OpenEverest-1.15.2-(2026-05-06): release-notes/OpenEverest-1.15.2-(2026-05-06).md
       - OpenEverest-1.15.1-(2026-05-01): release-notes/OpenEverest-1.15.1-(2026-05-01).md
       - OpenEverest-1.15.0-(2026-04-30): release-notes/OpenEverest-1.15.0-(2026-04-30).md
       - OpenEverest-1.14.0-(2026-03-10): release-notes/OpenEverest-1.14.0-(2026-03-10).md

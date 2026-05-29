@@ -128,6 +128,17 @@ kubectl get dbengine percona-postgresql-operator -n <your namespace> -o jsonpath
     Operator upgrades must be performed through the UI or API, not directly via Kubernetes.
 
 
+### Pausing a database cluster
+
+Setting `spec.paused: true` stops all engine and proxy pods while keeping storage volumes, credentials, and configuration intact. The cluster can be resumed at any time by setting the field back to `false`.
+
+```yaml
+spec:
+  paused: true  # Set to false to resume
+```
+
+For the full workflow including UI and API methods, see [Pause and resume databases](../use/pause_resume.md).
+
 ### Exposing your database
 
 You can expose your database service either through a LoadBalancer or NodePort service type.

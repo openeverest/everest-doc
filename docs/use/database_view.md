@@ -21,9 +21,11 @@ Click on the individual database and select the ellipsis menu (...). This will a
     For more in-depth instructions on how to restore a database, refer to the [restore a database from a backup](RestoreBackup.md) section.
 
 
- - **Suspend the database** - Suspending your database can save resources when it's not being used. 
+ - **Suspend the database** - Suspending your database (also called pausing) stops all engine and proxy pods while preserving your data, credentials, and configuration. This saves resources when the database is not in use.
     
-    To resume your database click **Resume**. You database will be immediately resumed.
+    To resume your database, click **Resume**. Your database will be immediately resumed.
+
+    For full details and API/CRD methods, see [Pause and resume databases](pause_resume.md).
 
  - **Delete the database** - If you have a database that you no longer use, you can delete it to free up space or resources.
 

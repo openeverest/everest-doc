@@ -13,6 +13,6 @@ The `status` field will show one of these states:
 - **initializing**: Database is being initialized
 - **ready**: Database is running and ready
 - **error**: An error has occurred
-- **paused**: Database is paused
+- **paused**: Database is paused — all pods are stopped, storage is preserved. See [Pause and resume databases](../use/pause_resume.md).
 - **upgrading**: Database is being upgraded
 - **restoring**: Database is being restored from backup

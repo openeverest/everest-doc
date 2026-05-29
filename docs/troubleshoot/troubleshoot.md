@@ -124,6 +124,34 @@ For troubleshooting OpenEverest installation issues using **everestctl** or the 
     !!! note
         This behavior is not confined to jobs alone. If the cluster lacks sufficient resources, any component may remain in a **Pending** state.
 
+4. **Local kind setup initialization timing**
+
+    When using local Kubernetes environments such as `kind`, Helm installation may initially time out while cluster components are still stabilizing. This behavior may be more noticeable in local environments such as WSL2.
+
+    Example:
+
+    ```sh
+    Error: INSTALLATION FAILED: failed post-install:
+    timed out waiting for the condition
+    ```
+
+    During startup, `everest-server` may temporarily restart if Kubernetes API connectivity is not yet available. This does not always indicate an installation failure.
+
+    Before retrying the installation, verify whether OpenEverest components are still progressing:
+
+    ```sh
+    kubectl get pods -n everest-system
+    ```
+
+    Review logs if required:
+
+    ```sh
+    kubectl logs -f deploy/everest-server -n everest-system
+    ```
+
+    !!! note
+        Temporary pod restarts during local kind setup may occur while Kubernetes components initialize. Allow the cluster to stabilize before reinstalling OpenEverest.
+
 For detailed information on the installation process, see [Installation overview](../troubleshoot/installation_overview.md)
 
 
