@@ -136,13 +136,22 @@ OpenEverest v2 is installed via Helm. You will need a running Kubernetes cluster
 Install the OpenEverest core:
 
 ```bash
-# Installation instructions coming soon
+helm repo add openeverest https://openeverest.github.io/helm-charts/
+helm repo update
+helm install everest-core openeverest/openeverest \
+  --devel \
+  --version "2.0.0-dev.1" \
+  --namespace everest-system \
+  --create-namespace
+
 ```
 
-Once the core is running, install the MongoDB Provider:
+Once the core is up, install the MongoDB provider:
 
 ```bash
-helm install everest-mongodb openeverest/everest-provider-mongodb \
+helm repo add provider-percona-server-mongodb https://openeverest.github.io/provider-percona-server-mongodb/
+helm repo update
+helm install provider-percona-server-mongodb provider-percona-server-mongodb/provider-percona-server-mongodb \
   --namespace everest-system
 ```
 
