@@ -1,7 +1,7 @@
 # Install OpenEverest using everestctl
 
-!!! warning "ACTION REQUIRED: OpenEverest and Bitnami Container Catalog changes"
-    Bitnami is **restructuring** its container catalog on **September 29, 2025**. To avoid potential failures in OpenEverest operations, follow the steps outlined in this [post](https://github.com/openeverest/openeverest/discussions/1663).
+!!! warning "Not available in this release"
+    The `everestctl` installation method is **not available** in the v2.0.0-dev.1 developer preview. Please use the [Helm-based installation](install_everest_helm_charts.md) instead.
 
 ## Before you start
 

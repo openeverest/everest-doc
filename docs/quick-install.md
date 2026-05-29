@@ -1,11 +1,9 @@
 # OpenEverest quick install guide
 
-Helm simplifies the installation of OpenEverest. With this guide, you'll be up and running with OpenEverest in no time. However, we also have a comprehensive [installation guide](install/install_everest_helm_charts.md) that covers all possibilities.
+!!! warning "Developer Preview"
+    This is a **developer preview** release (v2.0.0-dev.1). Features are incomplete and subject to change. The `everestctl` installation method is not available for this release.
 
-OpenEverest Helm charts can be found in [openeverest/helm-charts](https://github.com/openeverest/helm-charts/tree/main/charts/everest){:target="_blank"} repository in Github.
-
-!!! info "Alternative installation method"
-    If you prefer an alternative method, you can [install OpenEverest using everestctl](install/installEverest.md).
+With this guide, you'll be up and running with OpenEverest in no time. For more details, see the comprehensive [installation guide](install/install_everest_helm_charts.md).
 
 ## Prerequisites
 
@@ -14,9 +12,7 @@ Before getting started with OpenEverest, do the following:
 
 1. Install [Helm v3  :octicons-link-external-16:](https://docs.helm.sh/using_helm/#installing-helm){:target="_blank"}.
 
-4. Install [yq :octicons-link-external-16:](https://github.com/mikefarah/yq){:target="_blank"}.
-
-4. Set up a Kubernetes cluster.
+2. Set up a Kubernetes cluster.
      
     !!! note alert alert-primary "Note"
 
@@ -55,21 +51,29 @@ Before getting started with OpenEverest, do the following:
 To install OpenEverest using Helm follow these steps:
 {.power-number}
 
-1. Add the OpenEverest Helm repository.
+1. Add the OpenEverest Helm repository and install the core platform.
 
     ```sh
     helm repo add openeverest https://openeverest.github.io/helm-charts/
     helm repo update
+    helm install everest-core openeverest/openeverest \
+      --devel \
+      --version "2.0.0-dev.1" \
+      --namespace everest-system \
+      --create-namespace
     ```
 
-2. Install OpenEverest.
-
+2. Install the MongoDB Provider.
 
     ```sh
-    helm install everest openeverest/openeverest \
-    --namespace everest-system \
-    --create-namespace
+    helm repo add provider-percona-server-mongodb https://openeverest.github.io/provider-percona-server-mongodb/
+    helm repo update
+    helm install provider-percona-server-mongodb provider-percona-server-mongodb/provider-percona-server-mongodb \
+      --namespace everest-system
     ```
+
+    !!! note
+        Additional providers will be available in future releases. See [Providers](extend/providers.md) for more details.
 
 
     ??? info " 🌐 Install OpenEverest and access it using Ingress"
@@ -153,11 +157,9 @@ To install OpenEverest using Helm follow these steps:
 
         For comprehensive instructions on enabling TLS for OpenEverest, see the section [TLS setup with OpenEverest](../security/tls_setup.md#tls-setup-with-percona-everest).
 
-    Once OpenEverest is running successfully, you can create additional database namespaces. For detailed information, refer to the section on [namespace management](administer/manage_namespaces.md).
+    Once OpenEverest is running successfully, you can install additional Providers from the [Providers](extend/providers.md) page.
 
     !!! note
-        - If `dbNamespace.namespaceOverride` is set, the specified namespace will be provisioned instead of the default `everest` namespace.
-        - If `dbNamespace.enabled=false` is set, no namespaces will be provisioned. You can provision namespaces later with the `everestctl namespaces add <NAMESPACE>` command.
         - If you installed OpenEverest using `helm` and need to uninstall it, make sure to uninstall it exclusively through `helm` for seamless removal.
 
 ## Post-installation steps
@@ -172,7 +174,7 @@ Once you have successfully installed OpenEverest, proceed with the following ste
     ```
 
     !!! note
-        The default admin password is stored in plain text. It is highly recommended to update the password using `everestctl` to ensure that the passwords are hashed.
+        The default admin password is stored in plain text. It is highly recommended to update the password after installation.
 
     For information on user management, see the section [manage users in OpenEverest](administer/manage_users.md).
 

@@ -1,16 +1,17 @@
 # Install OpenEverest using Helm
 
-This section explains how to install OpenEverest using [Helm](https://helm.sh/){:target="_blank"} as an alternative to `everestctl`. Helm charts simplify the deployment process by packaging all necessary resources and configurations, making them ideal for automating and managing installations in Kubernetes environments.
+!!! warning "Developer Preview"
+    This is a **developer preview** release (v2.0.0-dev.1). Features are incomplete and subject to change. The `everestctl` installation method is not available for this release.
 
-OpenEverest Helm charts can be found in [openeverest/helm-charts](https://github.com/openeverest/helm-charts/tree/main/charts/everest){:target="_blank"} repository in Github.
+This section explains how to install OpenEverest using [Helm](https://helm.sh/){:target="_blank"}. Helm charts simplify the deployment process by packaging all necessary resources and configurations, making them ideal for automating and managing installations in Kubernetes environments.
 
 !!! info "Important"
     If you installed OpenEverest using Helm, make sure to uninstall it exclusively through Helm for a seamless removal.
 
 
-## Install OpenEverest and deploy database namespaces
+## Install OpenEverest
 
-Here are the steps to install OpenEverest and deploy additional database namespaces:
+Here are the steps to install OpenEverest:
 {.power-number}
 
 1. Add the OpenEverest Helm repository:
@@ -23,49 +24,24 @@ Here are the steps to install OpenEverest and deploy additional database namespa
 2. Install OpenEverest:
 
     ```sh
-    helm install everest openeverest/openeverest \
-    --namespace everest-system \
-    --create-namespace
+    helm install everest-core openeverest/openeverest \
+      --devel \
+      --version "2.0.0-dev.1" \
+      --namespace everest-system \
+      --create-namespace
     ```
 
-    ??? info "What's happening under the hood"
-        The command does the following:
-        {.power-number}
+3. Install the MongoDB Provider:
 
-        1. Deploys the OpenEverest components in the `everest-system` namespace. Currently, specifying a different namespace for OpenEverest is not supported.
+    ```sh
+    helm repo add provider-percona-server-mongodb https://openeverest.github.io/provider-percona-server-mongodb/
+    helm repo update
+    helm install provider-percona-server-mongodb provider-percona-server-mongodb/provider-percona-server-mongodb \
+      --namespace everest-system
+    ```
 
-        2. Deploys a new namespace called `everest` for your databases and the database operators.
-
-            You can override the name of the database namespace by using the `dbNamespace.namespaceOverride` parameter. If you prefer to deploy just the core components, set `dbNamespace.enabled=false`
-
-    **Optional installation flags**
-
-    | **Flags**          | **Description**                                                                                      |**Helm flag**                       |
-|------------------|--------------------------------------------------------------------------------------------------|----------------------------------|
-| PMM deployment | Deploy Percona Monitoring and Management (PMM) as a sub-chart. PMM will be automatically deployed within the `everest-system` namespace. | `--set pmm.enabled=true` |
-| TLS enabled      | Enable TLS encryption for secure communication between OpenEverest components.| `--set server.tls.enabled=true`  |
-
-
-    ??? example  "Examples"
-        Install with PMM enabled  
-    
-
-        ```sh
-        helm install everest-core openeverest/openeverest --namespace=everest-system --create-namespace --set pmm.enabled=true
-        ```
-
-
-        Install OpenEverest with TLS enabled:
-
-            
-            helm install everest openeverest/openeverest \
-            --namespace everest-system \
-            --create-namespace
-            --set server.tls.enabled=true
-            
-
-        For comprehensive instructions on enabling TLS for OpenEverest, see the section [TLS setup with OpenEverest](../security/tls_setup.md#tls-setup-with-percona-everest).
-
+    !!! note
+        Additional providers will be available in future releases. See [Providers](../extend/providers.md) for more details.
 
 4. Once the installation is complete, retrieve the `admin` password. 
 
@@ -75,7 +51,7 @@ Here are the steps to install OpenEverest and deploy additional database namespa
 
     - The default username for logging into the OpenEverest UI is `admin`. You can set a different default admin password by using the `server.initialAdminPassword` parameter during installation.
 
-    - The default `admin` password is stored in plain text. It is highly recommended to update the password using `everestctl` to ensure that the passwords are hashed. Instructions for installing `everestctl` can be found at [everestctl installation guide](../install/installEverestCLI.html#__tabbed_1_1).
+    - The default `admin` password is stored in plain text. It is highly recommended to update the password after installation.
 
         To access detailed information on user management, see the [manage users in OpenEverest](../administer/manage_users.md#update-the-password) section.
 
@@ -184,23 +160,6 @@ Here are the steps to install OpenEverest and deploy additional database namespa
             OpenEverest will be available at `https://127.0.0.1:8443`.
 
 
-5. Deploy additional database namespaces:
-
-    Once OpenEverest is successfully running, you can create additional database namespaces using the `everest-db-namespace` Helm chart. 
-
-    If you set `dbNamespaces.enabled=false` in **step 2**, you can deploy a database namespace with the following command:
-
-    ```sh
-    helm install everest \
-    openeverest/everest-db-namespace \
-    --create-namespace \
-    --namespace <DB namespace>
-    ```
-
-    !!! note
-        -  All database operators are installed in your database namespace by default. You can override this by specifying one or more of the following options: `[dbNamespace.pxc=false, dbNamespace.pg=false, dbNamespace.psmdb=false]`.
-        - Installation without chart hooks (i.e, the use of `--no-hooks`) is currently not supported.
-
 ## Configure parameters
 
 You can customize various parameters in the OpenEverest Helm charts for your deployment to meet your specific needs. Refer to the [Helm documentation](https://helm.sh/docs/chart_best_practices/values/){:target="_blank"} to discover how to configure these parameters.
@@ -214,15 +173,6 @@ A few parameters are listed in the following table. For a detailed list of the p
 |------|---------|-----------|---------------|
 |`server.initialAdminPassword`|string|""|Initial password configured for admin user.</br></br> If it is not set, a random password is generated. It is recommended to reset the admin password after installation.|
 |`server.oidc`|object|{}|OIDC configuration for Everest.</br></br> These settings are applied only during installation. To modify the settings after installation, you have to manually update the everest-settings `ConfigMap`.|
-
-
-**openeverest/everest-db-namespace subchart**
-
-|**Key**|**Type**|**Default**|**Description**|
-|-------|--------|-----------|---------------
-|`pxc`|bool|true| Installs the Percona XtraDB Cluster operator if set.|
-|everest-db-namespace|`postgresql`|bool|true| Installs the Percona Postgresql Server operator if set.|
-|`psmdb`|bool|true| Installs the Percona Server MongoDB operator if set.|
 
 
 ## Next steps
