@@ -65,6 +65,8 @@ The basic steps to create a new Provider plugin:
 4. Write a UI schema that auto-generates the OpenEverest creation and edit forms.
 5. Run your provider locally for quick testing or install it via the generated Helm chart.
 
+
+Detailed instruction on how to create a new Provider plugin is [here](https://github.com/openeverest/provider-sdk/blob/main/PROVIDER_DEVELOPMENT.md).
 ---
 
 ### Generic Plugins
@@ -143,7 +145,6 @@ helm install everest-core openeverest/openeverest \
   --version "2.0.0-dev.1" \
   --namespace everest-system \
   --create-namespace
-
 ```
 
 Once the core is up, install the MongoDB provider:
