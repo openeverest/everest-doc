@@ -84,4 +84,4 @@ The high-level steps are:
 4. Write the UI schema YAML for each topology.
 5. Build and publish a Helm chart for the provider.
 
-Detailed authoring documentation will be added in a future iteration. For now, the [Provider SDK repository](https://github.com/openeverest/provider-sdk) and [Spec 001](https://github.com/openeverest/specs/blob/main/specs/001-plugins-architecture.md) are the primary references.
+For full instructions on building and creating new Providers, see the [Provider Development Guide](https://github.com/openeverest/provider-sdk/blob/main/PROVIDER_DEVELOPMENT.md). [Spec 001](https://github.com/openeverest/specs/blob/main/specs/001-plugins-architecture.md) provides additional background on the Provider architecture.
