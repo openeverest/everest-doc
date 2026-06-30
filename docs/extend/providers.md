@@ -61,14 +61,9 @@ The **Percona Server for MongoDB Provider** is the reference implementation for 
 **Install:**
 
 ```bash
-helm install everest-mongodb openeverest/everest-provider-mongodb \
-  --namespace everest-system
-```
-
-**Upgrade:**
-
-```bash
-helm upgrade everest-mongodb openeverest/everest-provider-mongodb \
+helm repo add provider-percona-server-mongodb https://openeverest.github.io/provider-percona-server-mongodb/
+helm repo update
+helm install provider-percona-server-mongodb provider-percona-server-mongodb/provider-percona-server-mongodb \
   --namespace everest-system
 ```
 
