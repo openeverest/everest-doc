@@ -1,4 +1,4 @@
-# What's new in OpenEverest 1.16.0
+# What's new in OpenEverest 1.16.1
 
 ➡️ **New to OpenEverest?** Get started with our [Quickstart Guide](../quick-install.md).
 
@@ -59,7 +59,7 @@ OpenEverest now supports **Percona Operator for MySQL (PXC) 1.20.0** and **Perco
 
 ---
 
-## 🚀 Upgrade to OpenEverest 1.16.0
+## 🚀 Upgrade to OpenEverest 1.16.1
 
 ### Using everestctl
 
@@ -86,4 +86,4 @@ helm upgrade everest openeverest/everest -n everest-system
 
 ---
 
-**Full Changelog**: https://github.com/openeverest/openeverest/compare/v1.15.2...v1.16.0
+**Full Changelog**: https://github.com/openeverest/openeverest/compare/v1.15.2...v1.16.1
