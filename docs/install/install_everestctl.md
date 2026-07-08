@@ -16,8 +16,14 @@ You can download the latest version of `everestctl` visiting the latest release 
         ```sh
         brew tap openeverest/tap
         ```
+    
+    2. Grant trust to the tap (Required for Homebrew 6.0+)
 
-    2. Install `everestctl`:
+        ```sh
+        brew trust openeverest/tap
+        ```
+
+    3. Install `everestctl`:
 
         ```sh
         brew install everestctl
