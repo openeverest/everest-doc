@@ -47,7 +47,7 @@ To migrate, run the following commands:
     ```sh
     helm upgrade everest-core openeverest/openeverest \
       --namespace everest-system \
-      --reuse-values
+      --reset-then-reuse-values
     ```
 
     If you have one or more database namespace releases, upgrade each one:
@@ -55,10 +55,12 @@ To migrate, run the following commands:
     ```sh
     helm upgrade <RELEASE_NAME> openeverest/everest-db-namespace \
       --namespace <DB_NAMESPACE> \
-      --reuse-values
+      --reset-then-reuse-values
     ```
 
     Replace `<RELEASE_NAME>` and `<DB_NAMESPACE>` with your actual release name and namespace. To list all your current releases, run `helm list --all-namespaces`.
+
+    Use `--reset-then-reuse-values` instead of `--reuse-values` so new chart defaults (for fields introduced in the new chart version) are applied while your existing overrides are preserved. With `--reuse-values` alone, upgrades can fail when the chart adds required values that were not present in the previous release.
 
 4. (Optional) Remove the old Percona Helm repository once all releases have been migrated:
 
@@ -106,7 +108,9 @@ This ensures the CRDs are correctly recognized as managed by Helm, avoiding vali
 ## Upgrade Helm releases
 
 !!! warning
-    When using `helm upgrade`, specifying `--set` (or other equivalent flags) causes Helm to revert all other values to the defaults defined in the chart. To avoid this issue, either include the `--reuse-values` flag or provide the complete set of values, including those used during the installation.
+    When using `helm upgrade`, specifying `--set` (or other equivalent flags) causes Helm to revert all other values to the defaults defined in the chart. To avoid this issue, either include `--reuse-values` / `--reset-then-reuse-values` or provide the complete set of values, including those used during the installation.
+
+    Prefer `--reset-then-reuse-values` when upgrading to a chart version that introduces new values. `--reuse-values` keeps only the previous release values and can fail template rendering if the new chart expects fields that were not set before (for example `gatewayAPI.enabled`).
 
 To upgrade OpenEverest using Helm, run the following commands:
 {.power-number}
