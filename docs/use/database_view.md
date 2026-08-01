@@ -14,11 +14,11 @@ Click on the individual database and select the ellipsis menu (...). This will a
 
  - **Create database from a backup** - With OpenEverest, you have the ability to create a database from a backup. 
     
-    For more in-depth instructions on how to create a database from a backup, refer to the [create a database from a backup ](createBackups/create_new_database.md).
+    For more in-depth instructions on how to create a database from a backup, refer to the [create a database from a backup ](../backups_and_restore/createBackups/create_new_database.md).
 
  - **Restore database from a backup** - With OpenEverest, you have the ability to restore your database from a backup. 
     
-    For more in-depth instructions on how to restore a database, refer to the [restore a database from a backup](RestoreBackup.md) section.
+    For more in-depth instructions on how to restore a database, refer to the [restore a database from a backup](../backups_and_restore/RestoreBackup.md) section.
 
 
  - **Suspend the database** - Suspending your database (also called pausing) stops all engine and proxy pods while preserving your data, credentials, and configuration. This saves resources when the database is not in use.
@@ -69,10 +69,10 @@ The **Backups** tab lists all the backups created for the database. This include
 
 From the ellipsis (...) menu next to the database you can:
 
-- [Restore the backup to database](../use/RestoreBackup.md#RestoreBackup). 
+- [Restore the backup to database](../backups_and_restore/RestoreBackup.md).
 
 
-- [Create a new database from backup](createBackups/create_new_database.md#create_new_database). 
+- [Create a new database from backup](../backups_and_restore/createBackups/create_new_database.md).
 
     ![!image](../images/database_backups.png)
 
