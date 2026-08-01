@@ -117,7 +117,7 @@ Below is a comprehensive table outlining the permissions available for various *
 
     === "Restores"
 
-        For restores, to new and existing databases, you should grant the following permisssions as well:
+        For restores, to new and existing databases, you should grant the following permissions as well:
 
         - Read `backups` (of the old DB)
         - Read `MonitoringConfig` (if the old DB has monitoring enabled)
@@ -171,7 +171,7 @@ In this section, we will explore some examples that demonstrate how to create po
     
     === "Namespace admin role" 
     
-        **Admin role for a single namepsace**
+        **Admin role for a single namespace**
 
         Let's set up an admin role with unrestricted privileges to all the resources in a single namespace called `namespaceA`.
 
@@ -196,8 +196,8 @@ In this section, we will explore some examples that demonstrate how to create po
             - **Database engines**: `Read` and `update` access
             - **Database clusters**: `All` access (read, create, update, delete)
             - **Database cluster backups**: `All` access (read, create, delete) 
-            - **Database cluster rstores**: `All` access (read, create, update, delete) 
-            - **Database clusters credentials**: `Read` acccess
+            - **Database cluster restores**: `All` access (read, create, update, delete)
+            - **Database clusters credentials**: `Read` access
             - **Backup storages**: `All` access (read, create, update, delete)
             - **Monitoring instances**: `All` access (read, create, update, delete)
             - **Load balancer configs**: `All` access (read, create, update, delete)
@@ -265,7 +265,7 @@ In this section, we will explore some examples that demonstrate how to create po
             - **Database cluster restores**: `Read` access
             - **Backup storages**: `Read` access
             - **Monitoring instances**: `Read` access
-            - **Database clusters credentials**: `Read` acccess
+            - **Database clusters credentials**: `Read` access
             - **Load balancer configs**: `Read` access
             - **Pod scheduling policies**: `Read` access
 
@@ -296,7 +296,7 @@ In this section, we will explore some examples that demonstrate how to create po
             - **Database clusters**: `All` access (read, create, update, delete)
             - **Database cluster backups**: `All` access (read, create, delete)
             - **Database cluster restores**: `All` access (read, create, update, delete)
-            - **Database clusters credentials**: `Read` acccess for **all** the databases       
+            - **Database clusters credentials**: `Read` access for **all** the databases
             - **Backup storages**: `Read` access to all the backup storages
             - **Monitoring instances**: `Read` access to all the monitoring instances
 
@@ -325,8 +325,8 @@ In this section, we will explore some examples that demonstrate how to create po
             - **Database clusters**: `All` access (read, create, update, delete) in namespace `namespaceA` only for database `databaseA`
             - **Database cluster backups**: `All` access (read, create, delete) in the namespace `namespaceA`
             - **Database cluster restores**: `All` access (read, create, update, delete) in the namespace `namespaceA`
-            - **Database clusters credentials**: `Read` acccess for **all** the databases       
-            - **Backup storages**: `Read` access to all the backup storagesin the namespace `namespaceA`
+            - **Database clusters credentials**: `Read` access for **all** the databases
+            - **Backup storages**: `Read` access to all the backup storages in the namespace `namespaceA`
             - **Monitoring instances**: `Read` access to all the monitoring instances in the namespace `namespaceA`
 
 
@@ -556,12 +556,8 @@ Starting from OpenEverest v1.2.0, breaking changes are being implemented to the 
 
 
 
+
+
     
     
   
-
-
-
-
-
-

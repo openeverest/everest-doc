@@ -59,7 +59,7 @@ To install and provision OpenEverest to Kubernetes:
     - **Install OpenEverest using the headless mode**
         {.power-number}
 
-        1. Run the following command. You can set multiple namepaces in the headless mode. Replace `<namespace-name>` with the desired name for your namespace.
+        1. Run the following command. You can set multiple namespaces in the headless mode. Replace `<namespace-name>` with the desired name for your namespace.
             ```sh
             everestctl install --namespaces <namespace-name1>,<namespace-name2> --operator.mongodb=true --operator.postgresql=true --operator.mysql=true --skip-wizard
             ```
