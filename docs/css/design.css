@@ -137,6 +137,7 @@
     --md-footer-bg-color--dark: var(--stone800);
 
     /* Code */
+    --md-code-fg-color: var(--white);
     --md-code-bg-color: var(--stone50);
     --md-code-bg-color: var(--stone800);
 
