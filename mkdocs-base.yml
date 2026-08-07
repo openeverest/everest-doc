@@ -63,13 +63,11 @@ extra_css:
   - css/osano.css
   - css/everest.css
   - css/extra.css
-  - css/rating.css
 
 extra_javascript:
   #  - js/lightgallery.min.js
   - js/promptremover.js
   - js/consent.js
-  - js/rating.js
 
 #Copyright
 copyright: >
@@ -164,6 +162,7 @@ nav:
       - Overview: extend/index.md
       - Providers: extend/providers.md
       - Generic Plugins: extend/generic-plugins.md
+      - Extension Hub: extend/hub.md
 
   - Install:
     - Setup and prerequisites:
