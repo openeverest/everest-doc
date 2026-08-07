@@ -22,6 +22,12 @@ Generic Plugins cover use cases like SQL query browsers, AI data copilots, exter
 
 → [Learn about Generic Plugins](generic-plugins.md)
 
+### Extension Hub
+
+The **Extension Hub** is the central catalog for discovering and installing both Providers and Generic Plugins. It combines a community-maintained registry with an in-product browser that shows which extensions are available and which are already installed on your cluster.
+
+→ [Learn about the Extension Hub](hub.md)
+
 ## Architecture overview
 
 The diagram below shows how the two primitives relate to the OpenEverest core:
