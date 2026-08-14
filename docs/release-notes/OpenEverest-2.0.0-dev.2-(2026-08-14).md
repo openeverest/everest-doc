@@ -33,6 +33,9 @@ everestctl instance delete my-db -n my-namespace
 
 New command groups: `auth`, `instance`, `backup`, `restore`, `backup-storage` (alias `bs`), `backup-class` (alias `bc`), `provider` (alias `prov`).
 
+`everestctl` changes were contributed by @VijetaPriya47 through [LFX Mentorship program 2026 Term 2](https://mentorship.lfx.linuxfoundation.org/project/42dff370-4958-4ec4-959c-4aaf6740698c).
+
+
 !!! note
     `everestctl` is **not shipped as a binary with this release**. `everestctl install` and `everestctl uninstall` still target v1 and cannot install v2, so publishing the binary would be misleading. To try the commands above against an existing v2 installation, build it from source:
 
