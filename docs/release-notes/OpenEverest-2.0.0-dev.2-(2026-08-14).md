@@ -173,12 +173,12 @@ dataSource:
 - ConfigMap API with provider-declared schemas and runtime validation ([#2541](https://github.com/openeverest/openeverest/pull/2541)).
 - API auth token management with refresh tokens, and matching UI integration ([#2361](https://github.com/openeverest/openeverest/pull/2361), [#2362](https://github.com/openeverest/openeverest/pull/2362)).
 - Audit events carrying the acting user ([#2415](https://github.com/openeverest/openeverest/pull/2415)).
-- Replay buffer on `GET /v1/events` so reconnecting subscribers do not silently lose events ([#2591](https://github.com/openeverest/openeverest/pull/2591)).
+- Replay buffer on `GET /v1/events` so reconnecting subscribers do not silently lose events ([#2591](https://github.com/openeverest/openeverest/pull/2591)). (by @onkar717)
 - Provider upgrade catalog: `spec.release.version`, `spec.release.minUpgradableFrom`, and `deprecated` / `removedInVersion` on component versions ([#2604](https://github.com/openeverest/openeverest/pull/2604)).
 - `affinity` on `Instance.spec.components[]` ([#2364](https://github.com/openeverest/openeverest/pull/2364)) and `service` / `loadBalancerService` configuration on components.
 - Plugin hub in the v2 UI, with plugin-declared permissions ([#2367](https://github.com/openeverest/openeverest/pull/2367), [#2424](https://github.com/openeverest/openeverest/pull/2424)).
 - Tiles view for creating instances in the UI ([#2453](https://github.com/openeverest/openeverest/pull/2453)).
-- Backup/Restore reference validation at the API layer on create ([#2667](https://github.com/openeverest/openeverest/pull/2667)).
+- Backup/Restore reference validation at the API layer on create ([#2667](https://github.com/openeverest/openeverest/pull/2667)). (by @Adii-45)
 - `Instance` reconcile-request helper in provider-runtime ([#2515](https://github.com/openeverest/openeverest/pull/2515)).
 - Finalizer on `BackupStorage` plus end-to-end tests ([#2327](https://github.com/openeverest/openeverest/pull/2327), [#2353](https://github.com/openeverest/openeverest/pull/2353)).
 - RBAC fuzz tests ([#2581](https://github.com/openeverest/openeverest/pull/2581)), Dependabot coverage for v2 ([#2673](https://github.com/openeverest/openeverest/pull/2673)), CodeQL scanning of `release-2.0` and workflow files ([#2753](https://github.com/openeverest/openeverest/pull/2753)), and SBOM attestation for release artifacts ([#2858](https://github.com/openeverest/openeverest/pull/2858)).
@@ -196,34 +196,34 @@ dataSource:
   - CRD `metadata` typed as a shared `ObjectMeta` schema in the OpenAPI spec and generated clients ([#2652](https://github.com/openeverest/openeverest/pull/2652))
 
 - **Breaking:** `POST /v1/auth/revoke` is now unauthenticated ([#2448](https://github.com/openeverest/openeverest/pull/2448)).
-- Shared HTTP-poll classification extracted into `pkg/cli/wait`, so every `--wait`/`--watch` command behaves the same on transient errors ([#2808](https://github.com/openeverest/openeverest/pull/2808)).
+- Shared HTTP-poll classification extracted into `pkg/cli/wait`, so every `--wait`/`--watch` command behaves the same on transient errors ([#2808](https://github.com/openeverest/openeverest/pull/2808)). (by @VijetaPriya47)
 - UI upgraded from MUI 5 to MUI 7 ([#2548](https://github.com/openeverest/openeverest/pull/2548), [#2550](https://github.com/openeverest/openeverest/pull/2550), [#2569](https://github.com/openeverest/openeverest/pull/2569)).
-- Circular dependency removed from the UI and a strict ESLint rule added to prevent regressions ([#2417](https://github.com/openeverest/openeverest/pull/2417)).
+- Circular dependency removed from the UI and a strict ESLint rule added to prevent regressions ([#2417](https://github.com/openeverest/openeverest/pull/2417)). (by @StepanovPlaton)
 - `golangci-lint` upgraded to v2, and CI now fails on unformatted Go code ([#2535](https://github.com/openeverest/openeverest/pull/2535), [#2507](https://github.com/openeverest/openeverest/pull/2507)).
 - GitHub Actions pinned to full-length commit SHAs and workflow token permissions scoped down ([#2751](https://github.com/openeverest/openeverest/pull/2751), [#2752](https://github.com/openeverest/openeverest/pull/2752)).
 - Tilt development environment reworked for core development, with `InstancePreset`, plugin-hub and PXC provider support ([#2483](https://github.com/openeverest/openeverest/pull/2483), [#2439](https://github.com/openeverest/openeverest/pull/2439), [#2508](https://github.com/openeverest/openeverest/pull/2508), [#2346](https://github.com/openeverest/openeverest/pull/2346)).
 
 ### Fixed
 
-- provider-runtime reported `/readyz` as ready before the controller manager and its cache-backed client were usable ([#2611](https://github.com/openeverest/openeverest/pull/2611)).
-- Provider status messages were silently dropped instead of surfacing on the `Instance` ([#2366](https://github.com/openeverest/openeverest/pull/2366)).
+- provider-runtime reported `/readyz` as ready before the controller manager and its cache-backed client were usable ([#2611](https://github.com/openeverest/openeverest/pull/2611)). (by @Anuragkumar-687)
+- Provider status messages were silently dropped instead of surfacing on the `Instance` ([#2366](https://github.com/openeverest/openeverest/pull/2366)). (by @AdityaPimpalkar)
 - Nil connection reference caused a panic when an instance had no connection secret yet ([#2590](https://github.com/openeverest/openeverest/pull/2590)).
-- Init containers were counted incorrectly when computing instance resource totals ([#2719](https://github.com/openeverest/openeverest/pull/2719)).
-- `MonitoringConfig` finalizers and secrets were not cleaned up reliably on delete ([#2408](https://github.com/openeverest/openeverest/pull/2408)).
-- The server did not handle `SIGTERM`, so pods were killed instead of shutting down gracefully ([#2820](https://github.com/openeverest/openeverest/pull/2820)).
-- OIDC well-known configuration fetch had no HTTP timeout ([#2725](https://github.com/openeverest/openeverest/pull/2725)).
-- RBAC informer start errors were swallowed, and the ConfigMap adapter's Kubernetes calls had no timeout ([#2830](https://github.com/openeverest/openeverest/pull/2830), [#2822](https://github.com/openeverest/openeverest/pull/2822)).
-- Nil pointer panic when the JWT private key PEM was invalid ([#2851](https://github.com/openeverest/openeverest/pull/2851)).
-- Token blocklist update errors were not propagated ([#2769](https://github.com/openeverest/openeverest/pull/2769)).
+- Init containers were counted incorrectly when computing instance resource totals ([#2719](https://github.com/openeverest/openeverest/pull/2719)). (by @Jay2006sawant)
+- `MonitoringConfig` finalizers and secrets were not cleaned up reliably on delete ([#2408](https://github.com/openeverest/openeverest/pull/2408)). (by @alokkumardalei-wq)
+- The server did not handle `SIGTERM`, so pods were killed instead of shutting down gracefully ([#2820](https://github.com/openeverest/openeverest/pull/2820)). (by @Harkirat1309)
+- OIDC well-known configuration fetch had no HTTP timeout ([#2725](https://github.com/openeverest/openeverest/pull/2725)). (by @Harsh63870)
+- RBAC informer start errors were swallowed, and the ConfigMap adapter's Kubernetes calls had no timeout ([#2830](https://github.com/openeverest/openeverest/pull/2830) by @alloutflo, [#2822](https://github.com/openeverest/openeverest/pull/2822) by @Harkirat1309).
+- Nil pointer panic when the JWT private key PEM was invalid ([#2851](https://github.com/openeverest/openeverest/pull/2851)). (by @Atishyy27)
+- Token blocklist update errors were not propagated ([#2769](https://github.com/openeverest/openeverest/pull/2769)). (by @Anuragkumar-687)
 - The arm64 server image shipped amd64 binaries ([#2606](https://github.com/openeverest/openeverest/pull/2606)).
 - Helm chart dependency builds failed without a configured registry client ([#2607](https://github.com/openeverest/openeverest/pull/2607)).
 - Editing a backup storage location and the empty state of scheduled backups both errored in the UI ([#2320](https://github.com/openeverest/openeverest/pull/2320), [#2319](https://github.com/openeverest/openeverest/pull/2319)).
-- Database credentials cache was not scoped by namespace, and the RBAC route guard was not reactive ([#2173](https://github.com/openeverest/openeverest/pull/2173)).
-- The upgrade dialog reopened after being dismissed ([#2228](https://github.com/openeverest/openeverest/pull/2228)).
-- Multiline values overflowed the Database Summary preview ([#2090](https://github.com/openeverest/openeverest/pull/2090)).
+- Database credentials cache was not scoped by namespace, and the RBAC route guard was not reactive ([#2173](https://github.com/openeverest/openeverest/pull/2173)). (by @ashnaaseth2325-oss)
+- The upgrade dialog reopened after being dismissed ([#2228](https://github.com/openeverest/openeverest/pull/2228)). (by @ashnaaseth2325-oss)
+- Multiline values overflowed the Database Summary preview ([#2090](https://github.com/openeverest/openeverest/pull/2090)). (by @StepanovPlaton)
 - External links in the UI were missing `noreferrer`, and the login page lost spacing between the intro text and the community links ([#2857](https://github.com/openeverest/openeverest/pull/2857), [#2902](https://github.com/openeverest/openeverest/pull/2902)).
-- `everestctl` flag and message fixes, including `-n` as a shorthand for `--namespace` and the `namesapce` typo ([#2856](https://github.com/openeverest/openeverest/pull/2856), [#2795](https://github.com/openeverest/openeverest/pull/2795), [#2444](https://github.com/openeverest/openeverest/pull/2444), [#2252](https://github.com/openeverest/openeverest/pull/2252), [#2196](https://github.com/openeverest/openeverest/pull/2196)).
-- Documentation typos, broken links, stale extension CLI examples, the EKS z1d EBS volume limit, and the `providerRef.name` plugin filter reference ([#2458](https://github.com/openeverest/openeverest/pull/2458), [#2460](https://github.com/openeverest/openeverest/pull/2460), [#2622](https://github.com/openeverest/openeverest/pull/2622), [#2625](https://github.com/openeverest/openeverest/pull/2625), [#2778](https://github.com/openeverest/openeverest/pull/2778), [#2818](https://github.com/openeverest/openeverest/pull/2818), [#2624](https://github.com/openeverest/openeverest/pull/2624), [#2840](https://github.com/openeverest/openeverest/pull/2840)).
+- `everestctl` flag and message fixes, including `-n` as a shorthand for `--namespace` and the `namesapce` typo ([#2856](https://github.com/openeverest/openeverest/pull/2856), [#2795](https://github.com/openeverest/openeverest/pull/2795) by @Bhupesh-081, [#2444](https://github.com/openeverest/openeverest/pull/2444) by @sahilforkshere, [#2252](https://github.com/openeverest/openeverest/pull/2252) by @abhisheksainimitawa, [#2196](https://github.com/openeverest/openeverest/pull/2196) by @ayushHardeniya).
+- Documentation typos, broken links, stale extension CLI examples, the EKS z1d EBS volume limit, and the `providerRef.name` plugin filter reference ([#2458](https://github.com/openeverest/openeverest/pull/2458) by @Pranav-IIITM, [#2460](https://github.com/openeverest/openeverest/pull/2460) by @Pranav-IIITM, [#2622](https://github.com/openeverest/openeverest/pull/2622) by @false200, [#2625](https://github.com/openeverest/openeverest/pull/2625) by @Jay2006sawant, [#2778](https://github.com/openeverest/openeverest/pull/2778) by @Bhupesh-081, [#2818](https://github.com/openeverest/openeverest/pull/2818) by @Adii-45, [#2624](https://github.com/openeverest/openeverest/pull/2624) by @Jay2006sawant, [#2840](https://github.com/openeverest/openeverest/pull/2840) by @LarytheLord).
 
 ---
 
@@ -285,6 +285,14 @@ Try the Developer Preview, build a provider against the new API, and share your 
 - [Generic Plugin Template](https://github.com/openeverest/generic-plugin-template)
 - [Generic Plugins Spec](https://github.com/openeverest/specs/blob/main/specs/003-generic-plugins.md)
 - [Blog post about the v2 Developer Preview](https://openeverest.io/blog/v2-developer-preview-release/)
+
+---
+
+## 🙏 Thanks to our contributors
+
+This release wouldn't have been possible without our community. Huge thanks to everyone who contributed code, fixes, and improvements to Developer Preview 2:
+
+@abhisheksainimitawa, @Adii-45, @AdityaPimpalkar, @alloutflo, @alokkumardalei-wq, @Anuragkumar-687, @ashnaaseth2325-oss, @Atishyy27, @ayushHardeniya, @Bhupesh-081, @cansayin, @false200, @Harkirat1309, @Harsh63870, @Jay2006sawant, @LarytheLord, @onkar717, @Pranav-IIITM, @sahilforkshere, @StepanovPlaton, @VijetaPriya47
 
 ---
 
