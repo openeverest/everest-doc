@@ -33,6 +33,17 @@ everestctl instance delete my-db -n my-namespace
 
 New command groups: `auth`, `instance`, `backup`, `restore`, `backup-storage` (alias `bs`), `backup-class` (alias `bc`), `provider` (alias `prov`).
 
+!!! note
+    `everestctl` is **not shipped as a binary with this release**. `everestctl install` and `everestctl uninstall` still target v1 and cannot install v2, so publishing the binary would be misleading. To try the commands above against an existing v2 installation, build it from source:
+
+    ```bash
+    git clone --branch v2.0.0-dev.2 https://github.com/openeverest/openeverest.git
+    cd openeverest
+    make build-cli   # produces bin/everestctl
+    ```
+
+    Installation remains Helm-only for this preview.
+
 ### Point-in-time recovery, end to end
 
 PITR is now a first-class part of the v2 model rather than a modifier on a backup reference.
