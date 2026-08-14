@@ -288,7 +288,7 @@ Try the Developer Preview, build a provider against the new API, and share your 
 
 ---
 
-## 🙏 Thanks to our contributors
+## Thanks to our contributors
 
 This release wouldn't have been possible without our community. Huge thanks to everyone who contributed code, fixes, and improvements to Developer Preview 2:
 
