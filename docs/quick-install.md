@@ -58,7 +58,7 @@ To install OpenEverest using Helm follow these steps:
     helm repo update
     helm install everest-core openeverest/openeverest \
       --devel \
-      --version "2.0.0-dev.1" \
+      --version "2.0.0-dev.2" \
       --namespace everest-system \
       --create-namespace
     ```
@@ -66,14 +66,13 @@ To install OpenEverest using Helm follow these steps:
 2. Install the MongoDB Provider.
 
     ```sh
-    helm repo add provider-percona-server-mongodb https://openeverest.github.io/provider-percona-server-mongodb/
-    helm repo update
-    helm install provider-percona-server-mongodb provider-percona-server-mongodb/provider-percona-server-mongodb \
-      --namespace everest-system
+    helm install provider-percona-server-mongodb \
+      oci://ghcr.io/openeverest/charts/provider-percona-server-mongodb \
+      -n everest-system
     ```
 
-    !!! note
-        Additional providers will be available in future releases. See [Providers](extend/providers.md) for more details.
+    !!! tip "Find more providers and plugins in the Plugin Hub"
+        OpenEverest now ships with the **Plugin Hub**, an in-product catalog for discovering additional providers and plugins. Open it in the OpenEverest UI at `/plugins/plugin-hub`, or find it in the left-hand menu. Learn more in the [Extension Hub docs](extend/hub.md) and the [Plugin Hub introduction blog post](https://openeverest.io/blog/the-hub-introduction/).
 
 
     ??? info " 🌐 Install OpenEverest and access it using Ingress"
