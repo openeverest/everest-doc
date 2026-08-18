@@ -19,7 +19,7 @@ An Ingress Controller is a Kubernetes component that manages external access to 
 
 === "Install OpenEverest using Helm"
 
-    OpenEverest Helm charts are in the [openeverest/helm-charts](https://github.com/openeverest/helm-charts/tree/main/charts/everest){:target="_blank"} repository on GitHub.
+    OpenEverest Helm charts are in the [openeverest/helm-charts](https://github.com/openeverest/helm-charts/tree/v1.x/charts/everest){:target="_blank"} repository on GitHub.
 
     Here are the steps to install OpenEverest and deploy additional database namespaces:
     {.power-number}
@@ -151,7 +151,7 @@ An Ingress Controller is a Kubernetes component that manages external access to 
 === "Install OpenEverest using everesctl"
 
     !!! info "Important"
-        Starting from version 1.4.0, `everestctl` now uses the [Helm chart](https://github.com/openeverest/helm-charts/tree/main/charts/everest){:target="_blank"} to install OpenEverest. To configure chart parameters during installation through `everestctl`, you can:
+        Starting from version 1.4.0, `everestctl` now uses the [Helm chart](https://github.com/openeverest/helm-charts/tree/v1.x/charts/everest){:target="_blank"} to install OpenEverest. To configure chart parameters during installation through `everestctl`, you can:
         
         * Use the `--helm.set` flag to specify individual parameter values.
         * Provide a values file with the `--helm.values` flag for bulk configuration.

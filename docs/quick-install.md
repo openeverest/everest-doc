@@ -2,7 +2,7 @@
 
 Helm simplifies the installation of OpenEverest. With this guide, you'll be up and running with OpenEverest in no time. However, we also have a comprehensive [installation guide](install/install_everest_helm_charts.md) that covers all possibilities.
 
-OpenEverest Helm charts can be found in [openeverest/helm-charts](https://github.com/openeverest/helm-charts/tree/main/charts/everest){:target="_blank"} repository in Github.
+OpenEverest Helm charts can be found in [openeverest/helm-charts](https://github.com/openeverest/helm-charts/tree/v1.x/charts/everest){:target="_blank"} repository in Github.
 
 !!! info "Alternative installation method"
     If you prefer an alternative method, you can [install OpenEverest using everestctl](install/installEverest.md).

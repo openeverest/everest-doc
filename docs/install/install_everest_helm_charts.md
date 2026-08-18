@@ -2,7 +2,7 @@
 
 This section explains how to install OpenEverest using [Helm](https://helm.sh/){:target="_blank"} as an alternative to `everestctl`. Helm charts simplify the deployment process by packaging all necessary resources and configurations, making them ideal for automating and managing installations in Kubernetes environments.
 
-OpenEverest Helm charts can be found in [openeverest/helm-charts](https://github.com/openeverest/helm-charts/tree/main/charts/everest){:target="_blank"} repository in Github.
+OpenEverest Helm charts can be found in [openeverest/helm-charts](https://github.com/openeverest/helm-charts/tree/v1.x/charts/everest){:target="_blank"} repository in Github.
 
 !!! info "Important"
     If you installed OpenEverest using Helm, make sure to uninstall it exclusively through Helm for a seamless removal.

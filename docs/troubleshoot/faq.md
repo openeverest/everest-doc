@@ -58,7 +58,7 @@ OpenEverest doesn't deploy PMM (Percona Monitoring and Management). However, you
 
 We configure PMM agents in each DB deployment to communicate with an existing PMM server.
 
-The following table shows the [configurable parameters](https://github.com/openeverest/helm-charts/tree/main/charts/everest#configuration){:target="_blank"} of OpenEverest chart and their default values.
+The following table shows the [configurable parameters](https://github.com/openeverest/helm-charts/tree/v1.x/charts/everest#configuration){:target="_blank"} of OpenEverest chart and their default values.
 
 ### Monitoring configuration highlights:
 

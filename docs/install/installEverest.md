@@ -18,7 +18,7 @@ export KUBECONFIG=~/.kube/config
 ## Install OpenEverest
 
 !!! info "Important"
-    Starting from version 1.4.0, `everestctl` now uses the [Helm chart](https://github.com/openeverest/helm-charts/tree/main/charts/everest){:target="_blank"} to install OpenEverest. To configure chart parameters during installation through `everestctl`, you can:
+    Starting from version 1.4.0, `everestctl` now uses the [Helm chart](https://github.com/openeverest/helm-charts/tree/v1.x/charts/everest){:target="_blank"} to install OpenEverest. To configure chart parameters during installation through `everestctl`, you can:
 
     * Use the `--helm.set` flag to specify individual parameter values.
     * Provide a values file with the `--helm.values` flag for bulk configuration.
