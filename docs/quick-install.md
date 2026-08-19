@@ -1,7 +1,7 @@
 # OpenEverest quick install guide
 
 !!! warning "Developer Preview"
-    This is a **developer preview** release (v2.0.0-dev.1). Features are incomplete and subject to change. The `everestctl` installation method is not available for this release.
+    This is a **developer preview** release. Features are incomplete and subject to change. The `everestctl` installation method is not available for this release.
 
 With this guide, you'll be up and running with OpenEverest in no time. For more details, see the comprehensive [installation guide](install/install_everest_helm_charts.md).
 
