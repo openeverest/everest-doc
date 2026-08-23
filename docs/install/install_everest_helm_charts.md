@@ -91,7 +91,7 @@ Here are the steps to install OpenEverest and deploy additional database namespa
             ```sh
             helm upgrade everest-core openeverest/openeverest \
             --namespace everest-system \
-            --reuse-values \
+            --reset-then-reuse-values \
             --set server.service.type=LoadBalancer
             ```
                     
@@ -125,7 +125,7 @@ Here are the steps to install OpenEverest and deploy additional database namespa
             ```sh
             helm upgrade everest-core openeverest/openeverest \
             --namespace everest-system \
-            --reuse-values \
+            --reset-then-reuse-values \
             --set server.service.type=NodePort
             ```
             The following output displays the port assigned by Kubernetes to the everest service, which is `32349` in this case.
