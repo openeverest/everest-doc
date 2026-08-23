@@ -126,7 +126,7 @@ To install and provision OpenEverest to Kubernetes:
             ```sh
             helm upgrade everest openeverest/openeverest \
             --namespace everest-system \
-            --reuse-values \
+            --reset-then-reuse-values \
             --set server.service.type=LoadBalancer
             ```
                     
@@ -158,7 +158,7 @@ To install and provision OpenEverest to Kubernetes:
             ```sh
             helm upgrade everest openeverest/openeverest \
             --namespace everest-system \
-            --reuse-values \
+            --reset-then-reuse-values \
             --set server.service.type=NodePort
             ```
 
