@@ -46,19 +46,19 @@ To migrate, run the following commands:
 
     ```sh
     helm upgrade everest-core openeverest/openeverest \
-      --namespace everest-system \
-      --reuse-values
+      --namespace everest-system
     ```
 
     If you have one or more database namespace releases, upgrade each one:
 
     ```sh
     helm upgrade <RELEASE_NAME> openeverest/everest-db-namespace \
-      --namespace <DB_NAMESPACE> \
-      --reuse-values
+      --namespace <DB_NAMESPACE>
     ```
 
     Replace `<RELEASE_NAME>` and `<DB_NAMESPACE>` with your actual release name and namespace. To list all your current releases, run `helm list --all-namespaces`.
+
+    Do not pass `--reuse-values`. That flag replaces the new chart's defaults with the previous release's values, so new keys (for example `gatewayAPI.enabled`) stay unset and the upgrade can fail. With no `--set` or `-f`, `helm upgrade` already keeps your existing values and applies new chart defaults.
 
 4. (Optional) Remove the old Percona Helm repository once all releases have been migrated:
 
@@ -106,7 +106,7 @@ This ensures the CRDs are correctly recognized as managed by Helm, avoiding vali
 ## Upgrade Helm releases
 
 !!! warning
-    When using `helm upgrade`, specifying `--set` (or other equivalent flags) causes Helm to revert all other values to the defaults defined in the chart. To avoid this issue, either include the `--reuse-values` flag or provide the complete set of values, including those used during the installation.
+    When using `helm upgrade` with `--set` or `-f`, pass `--reset-then-reuse-values` (Helm 3.14.0 or later) so your overrides apply on top of the new chart's defaults. `--reuse-values` alone drops those defaults. Alternatively, pass the complete set of values used at install time.
 
 To upgrade OpenEverest using Helm, run the following commands:
 {.power-number}
