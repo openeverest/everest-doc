@@ -22,21 +22,20 @@ You can review different logs for additional information depending on the specif
 
 1. **Everest Core Components**
 
-    | Logs        | Command                                                     |
-    | ---------------- | ----------------------------------------------------------- |
-    | OpenEverest operator| `kubectl logs -f deploy/everest-operator -n everest-system` |
-    | OpenEverest server | `kubectl logs -f deploy/everest-server -n everest-system`   |
+    | Logs                   | Command                                                       |
+    | ---------------------- | ------------------------------------------------------------- |
+    | OpenEverest controller | `kubectl logs -f deploy/everest-controller -n everest-system` |
+    | OpenEverest server     | `kubectl logs -f deploy/everest-server -n everest-system`     |
 
-2. **Database Operators (in Namespaces)**
+2. **Providers (database operators)**
 
-    | Operator type | Namespace | Command                                                             |
-    | ------------- | --------- | ------------------------------------------------------------------- |
-    | PostgreSQL    | `everest` | `kubectl logs -f deploy/percona-postgresql-operator -n everest`     |
-    | MongoDB       | `everest` | `kubectl logs -f deploy/percona-server-mongodb-operator -n everest` |
-    | PXC           | `everest` | `kubectl logs -f deploy/percona-xtradb-cluster-operator -n everest` |
+    Providers are installed as Helm releases in the `everest-system` namespace, and each provider bundles a database operator. List the installed providers and their operator deployments, then follow the operator logs:
 
-    !!! note
-        Update the namespace (`-n <namespace>`) in your commands if your database clusters are deployed in a namespace other than the default one.
+    ```sh
+    helm list -n everest-system
+    kubectl get deploy -n everest-system
+    kubectl logs -f deploy/<database-operator-deployment> -n everest-system
+    ```
 
 3. **Monitoring**
 
@@ -66,16 +65,16 @@ You can review different logs for additional information depending on the specif
 
 ### Installation issues
 
-For troubleshooting OpenEverest installation issues using **everestctl** or the **Helm chart**, the following steps may be helpful:
+For troubleshooting OpenEverest installation issues with the **Helm chart**, the following steps may be helpful:
 {.power-number}
 
 1. **Permissions and privileges**
 
-    Installing database operators and their dependencies may require appropriate privileges. 
+    Installing OpenEverest and its providers may require appropriate privileges.
 
-     - OpenEverest installation may require `cluster-admin` privileges for:
-        - **Operator Lifecycle Manager (OLM)**
+     - OpenEverest installation may require `cluster-admin` privileges to create:
         - **CustomResourceDefinitions (CRDs)**
+        - **Cluster-scoped resources** such as `Provider` objects
 
     If you encounter failures during installation, ensure your user account has the appropriate permissions. 
 
@@ -105,15 +104,15 @@ For troubleshooting OpenEverest installation issues using **everestctl** or the 
 
         ```sh
         helm list -n everest-system
-        NAME            NAMESPACE         REVISION    UPDATED                                 STATUS      CHART            APP VERSION
-        everest-core    everest-system    1           2025-01-16 16:24:56.577713 +0530 IST    deployed    everest-1.4.0    1.4.0
+        NAME            NAMESPACE         REVISION    UPDATED                                 STATUS      CHART                    APP VERSION
+        everest-core    everest-system    1           2026-09-01 16:24:56.577713 +0000 UTC    deployed    openeverest-2.0.0-dev.3   2.0.0-dev.3
         ```
 
     - The OpenEverest installation has many components, so it will fail if any **subcomponent installations fail**. Check the relevant namespace where components are installed, along with the logs and events.
 
 3. **Resource availability**
 
-    When a job is created to approve the installation plan for operators, if the cluster has no available resources to run pods, the Helm installation will wait for the specified `--timeout` or the default 5 minutes before failing. 
+    If the cluster has no available resources to run pods, the Helm installation will wait for the specified `--timeout` (5 minutes by default) before failing.
     
     In such cases, check if any pod is stuck in the **Pending** state due to insufficient resources:
 
@@ -179,13 +178,13 @@ To troubleshoot issues with the OpenEverest UI, API, or authorization, check the
 
 3. **RBAC validation**
 
-    To resolve authorization and access issues, check the OpenEverest server logs. If [Role-Based Access Control (RBAC)](../administer/rbac.md) is enabled, [validate](../administer/administer/rbac.md#validate-your-rbac-policy) or [check the permissions](../administer/rbac.md#test-your-rbac-policy) using `everestctl`.
+    To resolve authorization and access issues, check the OpenEverest server logs. If [Role-Based Access Control (RBAC)](../administer/rbac.md) is enabled, review the RBAC policy stored in the `everest-rbac` ConfigMap:
 
     ```sh
-    kubectl get configmap everest-rbac -n everest-system
+    kubectl get configmap everest-rbac -n everest-system -o yaml
     ```
 
-5. **Local access via Port Forwarding**
+4. **Local access via Port Forwarding**
 
     If you experience any access issues or lag in the OpenEverest UI or API, try port-forwarding to the service and check the latency compared to accessing it via a **LoadBalancer** or **NodePort**. 
 
@@ -199,43 +198,38 @@ To troubleshoot issues with the OpenEverest UI, API, or authorization, check the
 Here are the common issues related to the database operations:
 {.power-number}
 
-1. **Check the `everest-operator` logs**
+1. **Check the `everest-controller` logs**
 
-    Check the `everest-operator` logs if the `DatabaseCluster` object has not been created or if there are any issues. 
+    Check the `everest-controller` logs if the `Instance` object has not been created or if there are any issues.
 
     ```sh
-    kubectl logs -f deploy/everest-operator -n everest-system
+    kubectl logs -f deploy/everest-controller -n everest-system
     ```
 
-2. **Check the `DatabaseCluster` object**
+2. **Check the `Instance` object**
 
-    Verify the status of the `DatabaseCluster` object and events. The status should be **Ready**. If it is anything other than **Ready**, further investigation is required. Describing the `DatabaseCluster` object provides details about the database configuration.
+    Verify the status and events of the `Instance` object. If it is not healthy, further investigation is required. Describing the object provides details about the database configuration.
 
     ```sh
-    kubectl get DatabaseCluster <DatabaseCluster-Name>
-    kubectl describe DatabaseCluster <DatabaseCluster-Name>
-    kubectl get DatabaseCluster <DatabaseCluster-Name> -oyaml
+    kubectl get instance <instance-name> -n everest-system
+    kubectl describe instance <instance-name> -n everest-system
+    kubectl get instance <instance-name> -n everest-system -o yaml
     ```
 
-3. **Database objects**
+3. **Check the provider's underlying database object**
 
-    Check the operator logs and the relevant database objects, such as PXC, PSMDB, and PG. For instance, check the PXC object followed by the operator logs.
+    From the `Instance`, the provider creates the database operator's own custom resource (for example, a `PerconaServerMongoDB`). Inspect it and the provider's operator logs:
 
     ```sh
-    kubectl get pxc <database-name>
-    kubectl describe pxc <database-name>
-    kubectl get pxc <database-name> -oyaml 
-    kubectl logs -f deploy/percona-xtradb-cluster-operator
-    
-    # Change to pxc, psmdb, pg for respective database
+    kubectl get <db-cr> <name> -n everest-system
+    kubectl describe <db-cr> <name> -n everest-system
+    kubectl logs -f deploy/<database-operator-deployment> -n everest-system
     ```
 
 4. **Check the database pod logs**
 
     ```sh
-    kubectl logs -f <database-pod-name> -c <database-container-name>  
-    
-    # (container name could be database, pxc, mongo)
+    kubectl logs -f <database-pod-name> -c <database-container-name>
     ```
 
 

@@ -1,7 +1,7 @@
 # Install OpenEverest using Helm
 
 !!! warning "Developer Preview"
-    This is a **developer preview** release (v2.0.0-dev.1). Features are incomplete and subject to change. The `everestctl` installation method is not available for this release.
+    This is a **developer preview** release. Features are incomplete and subject to change. The `everestctl` installation method is not available for this release.
 
 This section explains how to install OpenEverest using [Helm](https://helm.sh/){:target="_blank"}. Helm charts simplify the deployment process by packaging all necessary resources and configurations, making them ideal for automating and managing installations in Kubernetes environments.
 
@@ -26,22 +26,25 @@ Here are the steps to install OpenEverest:
     ```sh
     helm install everest-core openeverest/openeverest \
       --devel \
-      --version "2.0.0-dev.1" \
       --namespace everest-system \
       --create-namespace
     ```
 
+    The `--devel` flag tells Helm to include pre-release versions, so this installs the latest developer preview available in the repository.
+
+    !!! tip "Pin a specific version"
+        To install an exact release for reproducibility, add the `--version` flag, for example `--version "2.0.0-dev.3"`.
+
 3. Install the MongoDB Provider:
 
     ```sh
-    helm repo add provider-percona-server-mongodb https://openeverest.github.io/provider-percona-server-mongodb/
-    helm repo update
-    helm install provider-percona-server-mongodb provider-percona-server-mongodb/provider-percona-server-mongodb \
+    helm install provider-percona-server-mongodb \
+      oci://ghcr.io/openeverest/charts/provider-percona-server-mongodb \
       --namespace everest-system
     ```
 
-    !!! note
-        Additional providers will be available in future releases. See [Providers](../extend/providers.md) for more details.
+    !!! tip "Find more providers and plugins in the Plugin Hub"
+        OpenEverest ships with the **Plugin Hub**, an in-product catalog for discovering additional providers and plugins. Open it in the OpenEverest UI at `/plugins/plugin-hub`, or find it in the left-hand menu. Learn more in the [Extension Hub docs](../extend/hub.md), browse the online catalog at [openeverest.io/extensions :octicons-link-external-16:](https://openeverest.io/extensions/), or read the [Plugin Hub introduction blog post](https://openeverest.io/blog/the-hub-introduction/).
 
 4. Once the installation is complete, retrieve the `admin` password. 
 

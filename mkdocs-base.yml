@@ -180,8 +180,6 @@ nav:
   - Upgrade: 
     - Upgrade OpenEverest using Helm: upgrade/upgrade_with_helm.md
     - Upgrade OpenEverest using everestctl: upgrade/upgrade_with_cli.md
-    - Upgrade OpenEverest operators: upgrade/upgrade_operators.md
-    - Upgrade database versions: upgrade/mongodb_major_upgrades.md
 
   - Uninstall:
     - Uninstall OpenEverest using Helm: uninstall/uninstall_everest_helm.md
@@ -250,7 +248,6 @@ nav:
   - Troubleshooting guide:
       - Installation workflow and components : troubleshoot/installation_overview.md
       - Diagnostics for common issues: troubleshoot/troubleshoot.md
-      - OpenEverest and Bitnami Container Catalog Changes: troubleshoot/bitnami_container_catalog_changes.md
       - Frequently asked questions (FAQ): troubleshoot/faq.md
 
   - API: API.md

@@ -1,160 +1,126 @@
-# Install OpenEverest on Openshift
+# Install OpenEverest on OpenShift
 
-This section explains how to install OpenEverest using Openshift.
+This section explains how to install OpenEverest on OpenShift using [Helm](https://helm.sh/){:target="_blank"}.
 
-
+!!! warning "Developer Preview"
+    This is a **developer preview** release. Features are incomplete and subject to change. The `everestctl` installation method is not available for this release; install OpenEverest with Helm.
 
 ## Install OpenEverest
-
-Here are the steps to install OpenEverest with OpenShift compatibility enabled:
 {.power-number}
 
-1. Run the following command:
+1. Add the OpenEverest Helm repository:
 
     ```sh
-    helm install everest openeverest/openeverest \
-        --namespace everest-system \
-        --create-namespace \
-        --set compatibility.openshift=true \
-        --set dbNamespace.compatibility.openshift=true \
-        --set olm.install=false \
-        --set kube-state-metrics.securityContext.enabled=false \
-        --set kube-state-metrics.rbac.create=false
+    helm repo add openeverest https://openeverest.github.io/helm-charts/
+    helm repo update
     ```
 
-2. (Optional) Update RBAC for kube-state-metrics:
-
-    If you're running a chart version prior to 1.5.0, it's essential to manually create a `ClusterRoleBinding` for `kube-state-metrics` to ensure proper functionality. Use the following YAML:
+2. Install the OpenEverest core with **OpenShift compatibility enabled**:
 
     ```sh
-    cat <<EOF | kubectl apply -f -
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRoleBinding
-    metadata:
-        name: ksm-openshift-cluster-role-binding
-    roleRef:
-        kind: "ClusterRole"
-        apiGroup: "rbac.authorization.k8s.io"
-        name: kube-state-metrics
-    subjects:
-        - kind: "ServiceAccount"
-        name: kube-state-metrics
-        namespace: everest-monitoring
-    EOF
+    helm install everest-core openeverest/openeverest \
+      --devel \
+      --namespace everest-system \
+      --create-namespace \
+      --set compatibility.openshift=true
     ```
 
-    !!! note 
-        Starting from version 1.5.0 and onwards, a `ClusterRoleBinding` is created automatically when you enable the setting `compatibility.openshift=true`.
+    The `--devel` flag installs the latest developer preview. To pin an exact release, add `--version`, for example `--version "2.0.0-dev.3"`.
 
-
-3. (Optional) Deploy additional database namespaces:
-
-    If you need to add database namespaces, run the following command with OpenShift compatibility enabled:
+3. Install the MongoDB Provider:
 
     ```sh
-    helm install everest \
-        openeverest/everest-db-namespace \
-        --create-namespace \
-        --namespace everest \
-        --set compatibility.openshift=true
+    helm install provider-percona-server-mongodb \
+      oci://ghcr.io/openeverest/charts/provider-percona-server-mongodb \
+      --namespace everest-system
     ```
 
-    For detailed instructions, refer to the [installation section](install_everest_helm_charts.md) and adjust the installation parameters according to the values specified here.
+    !!! tip "Find more providers and plugins in the Plugin Hub"
+        OpenEverest ships with the **Plugin Hub**, an in-product catalog for discovering additional providers and plugins. Open it in the OpenEverest UI at `/plugins/plugin-hub`, or find it in the left-hand menu. Learn more in the [Extension Hub docs](../extend/hub.md), browse the online catalog at [openeverest.io/extensions :octicons-link-external-16:](https://openeverest.io/extensions/), or read the [Plugin Hub introduction blog post](https://openeverest.io/blog/the-hub-introduction/).
 
-4. Once the installation is complete, retrieve the `admin` password. 
+4. Once the installation is complete, retrieve the `admin` password:
 
     ```sh
-    kubectl get secret everest-accounts -n everest-system -o jsonpath='{.data.users\.yaml}' | base64 --decode  | yq '.admin.passwordHash'
+    kubectl get secret everest-accounts -n everest-system -o jsonpath='{.data.users\.yaml}' | base64 --decode | yq '.admin.passwordHash'
     ```
 
-    The default username for logging into the OpenEverest UI is `admin`. You can set a different default admin password by using the `server.initialAdminPassword` parameter during installation.
+    The default username for the OpenEverest UI is `admin`. You can set a different initial admin password with the `server.initialAdminPassword` parameter during installation.
 
-    The default `admin` password is stored in plain text. It is highly recommended to update the password using `everestctl` to ensure that the passwords are hashed.
+    !!! info "Important"
+        The default `admin` password is stored in plain text. It is highly recommended to update it so the password is hashed. See [manage users in OpenEverest](../administer/manage_users.md#update-the-password).
 
-    To access detailed information on user management, see the [manage users in OpenEverest](../administer/manage_users.md#update-the-password) section.
-
-4. Access the OpenEverest UI/API using one of the following options for exposing it, as OpenEverest is not exposed with an external IP by default:
+5. Access the OpenEverest UI/API. OpenEverest is not exposed with an external IP by default, so use one of the following options:
 
     === "Load Balancer"
 
-        1. Use the following command to change the OpenEverest service type to `LoadBalancer`:
-                    
+        1. Change the `everest` service type to `LoadBalancer`:
+
+            ```sh
+            kubectl patch svc/everest -n everest-system -p '{"spec": {"type": "LoadBalancer"}}'
             ```
-            helm install everest openeverest/openeverest \
-            --set service.type=LoadBalancer
-            ```
-                    
-        2. Retrieve the external IP address for the `everest` service. This is the address where you can then launch OpenEverest at the end of the installation procedure. In this example, the external IP address used is `http://34.175.201.246`.
-                
-            ```sh 
+
+        2. Retrieve the external IP address for the `everest` service:
+
+            ```sh
             kubectl get svc/everest -n everest-system
             ```
-                    
+
             ??? example "Expected output"
                 ```
-                NAME      TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)          AGE
-                everest   LoadBalancer   10.43.172.194   34.175.201.246       8080:8080/TCP    10s
+                NAME      TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)         AGE
+                everest   LoadBalancer   10.43.172.194   34.175.201.246   8080:8080/TCP   10s
                 ```
 
+        Open the OpenEverest UI at the external IP address, for example `http://34.175.201.246:8080`.
 
     === "Node Port"
 
-        A NodePort is a service that makes a specific port accessible on all nodes within the cluster. It enables external traffic to reach services running within the Kubernetes cluster by assigning a static port to each node's IP address.
+        A NodePort service makes a specific port accessible on all nodes within the cluster, assigning a static port on each node's IP address.
 
-        1. Run the following command to change the Everest service type to `NodePort`:
+        1. Change the `everest` service type to `NodePort`:
 
             ```sh
-            kubectl patch svc/everest -n everest-system -p '{"spec": {"type": "NodePort"}}
+            kubectl patch svc/everest -n everest-system -p '{"spec": {"type": "NodePort"}}'
             ```
-        2. The following command displays the port assigned by Kubernetes to the everest service, which is `32349` in this case.
+
+        2. Find the port Kubernetes assigned to the `everest` service (here, `32349`):
 
             ```sh
             kubectl get svc/everest -n everest-system
+            ```
+
+            ```{.text .no-copy}
             NAME      TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
             everest   NodePort   10.43.139.191   <none>        8080:32349/TCP   28m
             ```
 
-        3. Retrieve the external IP addresses for the kubernetes cluster nodes.
+        3. Retrieve the external IP addresses of the cluster nodes:
 
             ```sh
             kubectl get nodes -o wide
-            NAME                   STATUS   ROLES    AGE   VERSION             
-            INTERNAL-IPEXTERNAL-IP  OS-IMAGE                        KERNEL-VERSION   
-            CONTAINER-RUNTIME
-            gke-everest-test-default-pool-8bbed860-65gx   Ready    <none>   3m35s   
-            v1.30.3-gke.1969001   10.204.15.199   34.175.155.135   Container- 
-            Optimized OS from Google   6.1.100+         containerd://1.7.19
-            gke-everest-test-default-pool-8bbed860-pqzb   Ready    <none>   3m35s   
-            v1.30.3-gke.1969001   10.204.15.200   34.175.120.50    Container- 
-            Optimized OS from Google   6.1.100+         containerd://1.7.19
-            gke-everest-test-default-pool-8bbed860-s0hg   Ready    <none>   3m35s   
-            v1.30.3-gke.1969001   10.204.15.201   34.175.201.246   Container- 
-            Optimized OS from Google   6.1.100+         containerd://1.7.19
             ```
-        
-        4. To launch the OpenEverest UI and create your first database cluster, go to the IP address/port found in steps 2 and 3. In this example, the external IP address used is `http://34.175.155.135:32349`. Nevertheless, you have the option to use any node IP specified in the above steps.
+
+        4. Open the OpenEverest UI at any node IP address on the assigned port, for example `http://34.175.155.135:32349`.
 
     === "Port Forwarding"
 
-        1. Run the following command to setup a port-forward to the Everest server service:
-                
+        1. Set up a port-forward to the `everest` service:
+
             ```sh
             kubectl port-forward svc/everest 8080:8080 -n everest-system
-            ``` 
+            ```
 
-            To launch the OpenEverest UI and create your first database cluster, go to your localhost IP address `http://127.0.0.1:8080`.
+            Open the OpenEverest UI at `http://127.0.0.1:8080`.
 
+        2. (**Recommended**) When **TLS is enabled**, forward the TLS port instead:
 
-        2. (**Recommended**) When **Transport Layer Security (TLS) is enabled**, run the following command to connect to OpenEverest:       
-                    
             ```sh
             kubectl port-forward svc/everest 8443:443 -n everest-system
-            ``` 
+            ```
 
-            OpenEverest will be available at `http://127.0.0.1:8443`.
+            OpenEverest is then available at `https://127.0.0.1:8443`.
 
-
-            For comprehensive instructions on enabling TLS for OpenEverest, see the section [TLS setup with OpenEverest](../security/tls_setup.md#tls-setup-with-percona-everest).
+            For comprehensive instructions on enabling TLS for OpenEverest, see [TLS setup with OpenEverest](../security/tls_setup.md#tls-setup-with-percona-everest).
 
 ## Next steps
 

@@ -2,9 +2,20 @@
 
 OpenEverest is an open-source platform for automated database provisioning and management on Kubernetes. This page explains the key architectural decisions behind OpenEverest and describes its main components.
 
+## A small core, extended by Providers and Plugins
+
+OpenEverest version 2 is built around a deliberately small core. Rather than baking every database technology and every feature directly into the platform, the core provides a consistent API, a web UI shell, and access control — and delegates everything technology-specific to two independently installed extension primitives:
+
+- **Providers** teach OpenEverest how to manage a specific database or storage technology.
+- **Generic Plugins** add new functionality beyond database provisioning.
+
+Keeping the core small means new database engines and new capabilities can be added, upgraded, and released on their own cycles — without forking or rebuilding OpenEverest. Providers and Plugins are the heart of the v2 architecture; the core is the thin, stable surface they plug into.
+
+→ [Extend OpenEverest](../extend/index.md) explains the extension model in depth.
+
 ## Kubernetes Operators
 
-At the heart of OpenEverest is a deliberate bet on **Kubernetes Operators** as the primary building block for deploying and managing stateful workloads.
+Providers build on a deliberate bet on **Kubernetes Operators** as the primary building block for deploying and managing stateful workloads.
 
 ![!image](../images/operator-architecture.png)
 
@@ -21,25 +32,36 @@ Unlike Helm charts, which excel at initial deployment, Operators provide full da
 
 Beyond automation, database Operators carry built-in domain expertise. They don't just start database pods in the right order — they also configure replication topologies, deploy read/write proxies and connection poolers, and tune engine-level settings based on the resources available. This expertise would otherwise require years of operational experience to develop in-house.
 
+A Provider wraps one such Operator, exposing its capabilities through OpenEverest's consistent API.
+
 ## Main components
 
-OpenEverest is composed of three main components that work together to give users a single pane of glass over their database fleet.
+OpenEverest gives users a single pane of glass over their database fleet through a small core and the Providers and Plugins installed alongside it.
 
 ![!image](../images/openeverest-architecture.png)
 
-### OpenEverest Server
+### OpenEverest core
 
-The **OpenEverest Server** is the control plane that users interact with directly. It exposes:
+The **OpenEverest core** is the control plane that users interact with directly. It stays intentionally thin and technology-agnostic, exposing:
 
-- A **web UI** for managing database clusters, backups, monitoring endpoints, and access control.
+- A **web UI shell** for managing instances, backups, monitoring, and access control. Providers and Plugins contribute the technology-specific screens.
 - A **REST API** for programmatic access to all OpenEverest capabilities.
 
-### OpenEverest Operator
+The core does not contain database-specific logic. Instead, it routes user intent — expressed as an `Instance` custom resource — to the Provider responsible for that technology, and loads UI and API extensions contributed by Plugins.
 
-The **OpenEverest Operator** acts as an *operator of operators*. When a user creates or modifies a database cluster through the UI or API, the OpenEverest Operator translates that intent into the native `CustomResource` object of the appropriate database operator. This abstraction layer means users work with a single, consistent API regardless of which database technology is running underneath.
+### Providers
 
-### Database Operators
+A **Provider** is a self-contained plugin that teaches OpenEverest how to manage a specific database or storage technology. It reconciles the `Instance` custom resource by driving the underlying database Operator, defines the available components and deployment topologies, and ships the UI schema that generates the create and edit forms.
 
-**Database Operators** are Kubernetes Operators created by various open-source communities and vendors. They manage the lifecycle of a specific database engine — handling replication, failover, configuration, backups, and more according to each engine's requirements.
+Providers are installed independently of the core and can be upgraded on their own release cycle. Adding a new database technology means installing a new Provider — no changes to the core are required.
 
-OpenEverest is designed to be modular: new database technologies can be added by integrating a new Operator, without changes to the core platform. The currently supported engines are listed on the [supported operators](../install/supported_operators_k8s.md) page.
+→ [Learn about Providers](../extend/providers.md)
+
+### Generic Plugins
+
+A **Generic Plugin** extends OpenEverest with functionality beyond database provisioning. A plugin can contribute UI pages, sidebar entries, instance detail panels, backend API logic, and CLI subcommands — all without rebuilding or redeploying the core. Typical use cases include SQL query browsers, data migration tools, external database discovery, and compliance or audit tooling.
+
+→ [Learn about Generic Plugins](../extend/generic-plugins.md)
+
+Providers and Generic Plugins are discovered and installed through the [Extension Hub](../extend/hub.md).
+

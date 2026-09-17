@@ -1,8 +1,5 @@
 # Upgrade OpenEverest using everestctl
 
-!!! warning "ACTION REQUIRED: OpenEverest and Bitnami Container Catalog changes"
-    Bitnami is **restructuring** its container catalog on **September 29, 2025**. To avoid potential failures in OpenEverest operations, follow the steps outlined in this [post](https://github.com/openeverest/openeverest/discussions/1663).
-
 OpenEverest regularly releases updates that contain bug fixes, security improvements, and other enhancements to improve the overall performance of your database.
 
 

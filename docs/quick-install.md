@@ -58,10 +58,11 @@ To install OpenEverest using Helm follow these steps:
     helm repo update
     helm install everest-core openeverest/openeverest \
       --devel \
-      --version "2.0.0-dev.2" \
       --namespace everest-system \
       --create-namespace
     ```
+
+    The `--devel` flag tells Helm to include pre-release versions, so this installs the latest developer preview available in the repository. To pin an exact release, add `--version`, for example `--version "2.0.0-dev.3"`.
 
 2. Install the MongoDB Provider.
 
