@@ -187,6 +187,7 @@ nav:
    
   - Administer:
       - User management: administer/manage_users.md
+      - Instance presets: administer/instance_presets.md
       - Role-based access control: administer/rbac.md
       - RBAC integration with IdP groups: administer/Idp_groups_integration.md
       - Pod scheduling policies: 
@@ -272,6 +273,7 @@ nav:
 
   - Release Notes:
       - Release notes index: release-notes/release_notes_index.md
+      - OpenEverest-2.0.0-dev.3-(2026-09-17): release-notes/OpenEverest-2.0.0-dev.3-(2026-09-17).md
       - OpenEverest-2.0.0-dev.2-(2026-08-14): release-notes/OpenEverest-2.0.0-dev.2-(2026-08-14).md
       - OpenEverest-1.16.2-(2026-07-30): release-notes/OpenEverest-1.16.2-(2026-07-30).md
       - OpenEverest-1.16.1-(2026-07-08): release-notes/OpenEverest-1.16.1-(2026-07-08).md
