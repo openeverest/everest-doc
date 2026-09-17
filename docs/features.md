@@ -21,4 +21,4 @@ Some of the key features of OpenEverest are:
 
 ## Administrative
 
-* **[Database monitoring with PMM](use/monitor_endpoints.md)**: Monitor your databases and Kubernetes clusters with Percona Monitoring and Management (PMM) to gain insights into performance metrics, query analysis, and other important functions.
+* **[Database monitoring](use/monitor_endpoints.md)**: Gain insights into performance metrics, query analysis, and other important functions through the observability tooling that each provider exposes. Providers integrate their own monitoring solution — for example, Percona providers support Percona Monitoring and Management (PMM).
