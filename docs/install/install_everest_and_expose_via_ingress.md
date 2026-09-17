@@ -1,247 +1,134 @@
 # Install OpenEverest and expose via Ingress controller
 
-This section explains how to install OpenEverest using [Helm](https://helm.sh/){:target="_blank"} or  `everestctl` and expose OpenEverest using [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/#what-is-ingress){:target="_blank"}.
+This section explains how to install OpenEverest using [Helm](https://helm.sh/){:target="_blank"} and expose it using an [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#what-is-ingress){:target="_blank"}.
 
+An Ingress controller is a Kubernetes component that manages external access to services within a cluster, usually over HTTP and HTTPS. It processes Ingress resources — rules that define how traffic is routed to services in the cluster.
 
-An Ingress Controller is a Kubernetes component that manages external access to services within a cluster, usually over HTTP and HTTPS. It is responsible for processing Ingress resources, which are rules that define how traffic should be routed to different services within the cluster.
+!!! warning "Developer Preview"
+    This is a **developer preview** release. Features are incomplete and subject to change. The `everestctl` installation method is not available for this release; install OpenEverest with Helm.
 
 ## Prerequisites
 
-- A `kubeconfig` file in the `~/.kube/config` path. If your file is located elsewhere, use the export command below to set the `KUBECONFIG` environment variable:            
-        
+- A `kubeconfig` file at `~/.kube/config`. If your file is located elsewhere, set the `KUBECONFIG` environment variable:
+
     ```sh
     export KUBECONFIG=~/.kube/config
     ```
 
-- An [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/){:target="_blank"} (e.g., Nginx) installed on your Kubernetes cluster
-
+- An [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/){:target="_blank"} (for example, NGINX) installed on your cluster.
 - (Optional but recommended for production) A TLS certificate stored in a Kubernetes Secret.
 
-=== "Install OpenEverest using Helm"
+## Install OpenEverest
+{.power-number}
 
-    OpenEverest Helm charts are in the [openeverest/helm-charts](https://github.com/openeverest/helm-charts/tree/main/charts/everest){:target="_blank"} repository on GitHub.
+1. Add the OpenEverest Helm repository:
 
-    Here are the steps to install OpenEverest and deploy additional database namespaces:
-    {.power-number}
+    ```sh
+    helm repo add openeverest https://openeverest.github.io/helm-charts/
+    helm repo update
+    ```
 
-    1. Add the Percona Helm repository:
+2. Install the OpenEverest core with **Ingress enabled**:
 
-        ```sh
-        helm repo add openeverest https://openeverest.github.io/helm-charts/
-        helm repo update
-        ```
+    ```sh
+    helm install everest-core openeverest/openeverest \
+      --devel \
+      --namespace everest-system \
+      --create-namespace \
+      --set ingress.enabled=true \
+      --set ingress.ingressClassName="nginx" \
+      --set ingress.hosts[0].host=everest.example.com \
+      --set ingress.hosts[0].paths[0].path=/ \
+      --set ingress.hosts[0].paths[0].pathType=ImplementationSpecific
+    ```
 
-    2. Install OpenEverest with **Ingress enabled**:
+    !!! note
+        Replace `everest.example.com` with your own domain, and `nginx` with your Ingress class name.
 
-        ```sh
-        helm install everest openeverest/openeverest \
-          -n everest-system \
-          --set ingress.enabled=true \
-          --set ingress.ingressClassName="" \
-          --set ingress.hosts[0].host=everest.example.com \
-          --set ingress.hosts[0].paths[0].path=/ \
-          --set  ingress.hosts[0].paths[0].pathType=ImplementationSpecific
-        ```  
-                
-        !!! note
-            Replace `everest.example.com` with your own domain.
+    The `--devel` flag installs the latest developer preview. To pin an exact release, add `--version`, for example `--version "2.0.0-dev.3"`.
 
-        ??? info "What's happening under the hood"
-            The command does the following:
-            {.power-number}
+    ??? info "What's happening under the hood"
+        This deploys the OpenEverest core components in the `everest-system` namespace. Specifying a different namespace for the core is not currently supported. Database technologies are added separately by installing Providers (see the next step).
 
-            1. Deploys the OpenEverest components in the `everest-system` namespace. Currently, specifying a different namespace for OpenEverest is not supported.
+3. Install the MongoDB Provider:
 
-            2. Deploys a new namespace called `everest` for your databases and the database operators.
+    ```sh
+    helm install provider-percona-server-mongodb \
+      oci://ghcr.io/openeverest/charts/provider-percona-server-mongodb \
+      --namespace everest-system
+    ```
 
-                You can override the name of the database namespace by using the `dbNamespace.namespaceOverride` parameter. If you prefer to deploy just the core components, set `dbNamespace.enabled=false`
+    !!! tip "Find more providers and plugins in the Plugin Hub"
+        OpenEverest ships with the **Plugin Hub**, an in-product catalog for discovering additional providers and plugins. Open it in the OpenEverest UI at `/plugins/plugin-hub`, or find it in the left-hand menu. Learn more in the [Extension Hub docs](../extend/hub.md), browse the online catalog at [openeverest.io/extensions :octicons-link-external-16:](https://openeverest.io/extensions/), or read the [Plugin Hub introduction blog post](https://openeverest.io/blog/the-hub-introduction/).
 
+4. Verify the Ingress resource:
 
-    3. Verify the Ingress resource:
+    ```sh
+    kubectl get ingress -n everest-system
+    ```
 
-        ```sh
-        kubectl get ingress -n everest-system
-        ```
+    Ensure the address is valid and routes to the `everest` service.
 
-        Ensure the address provided is valid and correctly routes to the `everest` service.
+    ??? example "Example: using a Helm values file"
 
-        ??? example "Example: Using a Helm values file"
-
-
-            ```sh
-            ingress:
-            # -- Enable ingress for Everest server
-              enabled: true
-            # -- Ingress class name. This is used to specify which ingress controller should handle this ingress.
-              ingressClassName: "nginx"
-            # -- Additional annotations for the ingress resource.
-              annotations: {}
-            # -- List of hosts and their paths for the ingress resource.
-              hosts:
-                - host: everest.example.com
+        ```yaml
+        ingress:
+          # -- Enable ingress for the Everest server
+          enabled: true
+          # -- Ingress class name — which ingress controller handles this ingress.
+          ingressClassName: "nginx"
+          # -- Additional annotations for the ingress resource.
+          annotations: {}
+          # -- Hosts and their paths for the ingress resource.
+          hosts:
+            - host: everest.example.com
               paths:
-                  - path: /
+                - path: /
                   pathType: ImplementationSpecific
-            # -- TLS configuration for the ingress resource.
-            # -- Each entry in the list specifies a TLS certificate and the hosts it applies to.
-              tls: []
-            #  - secretName: everest-tls
-            #    hosts:
-            #      - everest.example.com
-            ```
-            
-            Install OpenEverest using this `YAML` file:
-
-            ```sh
-            helm install everest openeverest/openeverest \
-              -n everest-system \
-              -f everest-values.yaml
-            ```
-
-        ??? info "🔒 Install OpenEverest with TLS enabled"
-
-            Install OpenEverest with TLS enabled:
-
-            ```sh
-            helm install everest openeverest/openeverest \
-            --namespace everest-system \
-            --create-namespace
-            --set server.tls.enabled=true
-            ```
-
-            For comprehensive instructions on enabling TLS for OpenEverest, see the section [TLS setup with OpenEverest](../security/tls_setup.md#tls-setup-with-percona-everest).
-
-
-    4. Once the installation is complete, retrieve the `admin` password. 
-
-        ```sh
-        kubectl get secret everest-accounts -n everest-system -o jsonpath='{.data.users\.yaml}' | base64 --decode  | yq '.admin.passwordHash'
+          # -- TLS configuration for the ingress resource.
+          tls: []
+          #  - secretName: everest-tls
+          #    hosts:
+          #      - everest.example.com
         ```
 
-        - The default username for logging into the OpenEverest UI is `admin`. You can set a different default admin password by using the `server.initialAdminPassword` parameter during installation.
-
-            !!! info "Important"
-                The default `admin` password is stored in plain text. It is highly recommended that the password be updated using `everestctl` to ensure that the passwords are hashed. Instructions for installing `everestctl` can be found in [everestctl installation guide](../install/installEverestCLI.html#__tabbed_1_1).
-
-            To access detailed information on user management, see the [manage users in OpenEverest](../administer/manage_users.md#update-the-password) section.
-
-    5. To access the OpenEverest UI/API, open your browser and go to `https://everest.example.com`.
-
-        !!! note
-            Replace `everest.example.com` with your own domain.
-    
-
-    6. Deploy additional database namespaces:
-
-        Once OpenEverest runs successfully, you can create additional database namespaces using the `everest-db-namespace` Helm chart. 
-
-        If you set `dbNamespaces.enabled=false` in **step 2**, you can deploy a database namespace with the following command:
+        Install OpenEverest using this file:
 
         ```sh
-        helm install everest \
-        openeverest/everest-db-namespace \
-        --create-namespace \
-        --namespace <DB namespace>
+        helm install everest-core openeverest/openeverest \
+          --devel \
+          -n everest-system \
+          --create-namespace \
+          -f everest-values.yaml
         ```
 
-        !!! note
-            -  All database operators are installed in your database namespace by default. You can override this by specifying one or more of the following options: `[dbNamespace.pxc=false, dbNamespace.pg=false, dbNamespace.psmdb=false]`.
-            - Installation without chart hooks (i.e, the use of `--no-hooks`) is currently not supported.
+    ??? info "🔒 Install OpenEverest with TLS enabled"
 
-=== "Install OpenEverest using everesctl"
+        ```sh
+        helm install everest-core openeverest/openeverest \
+          --devel \
+          --namespace everest-system \
+          --create-namespace \
+          --set server.tls.enabled=true
+        ```
+
+        For comprehensive instructions on enabling TLS for OpenEverest, see [TLS setup with OpenEverest](../security/tls_setup.md#tls-setup-with-percona-everest).
+
+5. Once the installation is complete, retrieve the `admin` password:
+
+    ```sh
+    kubectl get secret everest-accounts -n everest-system -o jsonpath='{.data.users\.yaml}' | base64 --decode | yq '.admin.passwordHash'
+    ```
+
+    The default username for the OpenEverest UI is `admin`. You can set a different initial admin password with the `server.initialAdminPassword` parameter during installation.
 
     !!! info "Important"
-        Starting from version 1.4.0, `everestctl` now uses the [Helm chart](https://github.com/openeverest/helm-charts/tree/main/charts/everest){:target="_blank"} to install OpenEverest. To configure chart parameters during installation through `everestctl`, you can:
-        
-        * Use the `--helm.set` flag to specify individual parameter values.
-        * Provide a values file with the `--helm.values` flag for bulk configuration.
-        
-    To install and provision OpenEverest to Kubernetes:
-    {.power-number}
-        
-    1. Download the latest release of [everestctl](https://github.com/openeverest/openeverest/releases/latest){:target="_blank"} to provision OpenEverest. For detailed installation instructions, see [everestctl installation documentation](../install/install_everestctl.md).
-        
-        
-    2. Install OpenEverest:
-        
-        ```sh
-        everestctl install \
-        --helm.set ingress.enabled=true \
-        --helm.set ingress.ingressClassName="" \
-        --helm.set ingress.hosts[0].host=everest.example.com \
-        --helm.set ingress.hosts[0].paths[0].path=/ \
-        --helm.set ingress.hosts[0].paths[0].pathType=ImplementationSpecific
-        ```
+        The default `admin` password is stored in plain text. It is highly recommended to update it so the password is hashed. See [manage users in OpenEverest](../administer/manage_users.md#update-the-password).
 
-        
+6. To access the OpenEverest UI/API, open your browser and go to `https://everest.example.com`.
+
+    !!! note
         Replace `everest.example.com` with your own domain.
-
-    3. Enter the specific names for the namespaces you want OpenEverest to manage, separating each name with a comma. [These](../use/multi-namespaces.md#default-namespaces-in-openeverest) namespaces are restricted and cannot be used for deploying databases.   
-            
-    4. Verify Ingress:
-
-        ```sh
-        kubectl get ingress -n everest-system
-        ```
-
-        Make sure the address provided is valid and that it correctly routes to the `everest` service.
-
-        ??? example "Example: Custom YAML configuration file"
-
-                
-                ingress:
-                # -- Enable ingress for Everest server
-                enabled: true
-                # -- Ingress class name. This is used to specify which ingress controller should handle this ingress.
-                ingressClassName: "nginx"
-                # -- Additional annotations for the ingress resource.
-                annotations: {}
-                # -- List of hosts and their paths for the ingress resource.
-                hosts:
-                  - host: everest.example.com
-                    paths:
-                      - path: /
-                      pathType: ImplementationSpecific
-                    # -- TLS configuration for the ingress resource.
-                    # -- Each entry in the list specifies a TLS certificate and the hosts to which it applies.
-                tls: []
-                        #  - secretName: everest-tls
-                        #    hosts:
-                        #      - everest.example.com
-        
-
-            Install OpenEverest using this file:
-
-            ```sh
-            everestctl install --helm.values everest-values.yaml
-            ```
-
-    5. Once the installation is complete, retrieve the `admin` password. 
-
-        ```sh
-        everestctl accounts initial-admin-password
-        ```
-
-        - The default username for logging into the OpenEverest UI is `admin`. You can set a different default admin password by using the `server.initialAdminPassword` parameter during installation.
-
-        - The default `admin` password is stored in plain text.
-        
-            !!! info "Important"
-                It is highly recommended that the password be updated using `everestctl` to ensure that the passwords are hashed.  Instructions for installing `everestctl` can be found at [everestctl installation guide](../install/installEverestCLI.html#__tabbed_1_1).
-
-            To access detailed information on user management, see the [manage users in OpenEverest](../administer/manage_users.md#update-the-password) section.
-
-    6. To access the OpenEverest UI/API, open your browser and go to  `https://everest.example.com`.
-
-        !!! note
-            Replace `everest.example.com` with your own domain.
-        
-    7.  If you skip adding the namespaces while installing OpenEverest, you can add them later using the following command.
-        
-        ```sh
-        everestctl namespaces add <NAMESPACE>
-        ``` 
-                
 
 ## Next steps
 

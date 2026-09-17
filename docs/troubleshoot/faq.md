@@ -3,16 +3,14 @@
 This page outlines the most frequently asked questions (FAQs) about OpenEverest.
 
 
-## What is a DatabaseEngine?
+## What is a Provider?
 
-The `DatabaseEngine` is a resource that represents the installed engines (MySQL, MongoDB, PostgreSQL). 
+A `Provider` is a resource that represents an installed database provider (for example, Percona Server for MongoDB). Each provider bundles a database operator and declares:
 
-Each `DatabaseEngine` indicates:
+- The database engine it manages (MySQL, MongoDB, or PostgreSQL).
+- The engine versions it supports.
 
-- The operator version currently installed.
-- Compatible engine versions supported by that operator. 
-
-Refer to our [API documentation](https://openeverest.io/docs/api/#/operations/getKubernetesClusterResources){:target="_blank"} for usage information.
+Users create databases as `Instance` resources, which reference a provider and one of its supported engine versions.
 
 ## Does OpenEverest provide logs for API calls?
 
@@ -45,26 +43,21 @@ kubectl logs -f deploy/everest-server -n everest-system
 
 All communication with OpenEverest resources begins with the API.
 
-The API is responsible for updating Everest resources, while the Everest operator continues to create resources for the corresponding database operators. 
+The API (`everest-server`) updates OpenEverest resources, while the `everest-controller` reconciles them and hands off to the provider's database operator.
 
 ## Recommended troubleshooting flow
 
-When debugging, start with the API, proceed to the Everest operator, and examine the individual database operators.
+When debugging, start with the API (`everest-server`), proceed to the `everest-controller`, and then examine the provider's database operator.
 
 
 ## Does OpenEverest deploy PMM servers?
 
-OpenEverest doesn't deploy PMM (Percona Monitoring and Management). However, you can deploy a PMM server while installing OpenEverest. You need to set `pmm.enabled=true`. 
+No. OpenEverest does not deploy PMM (Percona Monitoring and Management). PMM v3 is still supported as an external monitoring target, but only by some providers — monitoring support is provider-dependent. When a provider supports it, OpenEverest configures the database's monitoring agents to send metrics to your existing PMM server.
 
-We configure PMM agents in each DB deployment to communicate with an existing PMM server.
+- A `MonitoringConfig` holds the details required to connect to the PMM server, such as its URL and API key.
+- Point the database at that configuration to start sending metrics.
 
-The following table shows the [configurable parameters](https://github.com/openeverest/helm-charts/tree/main/charts/everest#configuration){:target="_blank"} of OpenEverest chart and their default values.
-
-### Monitoring configuration highlights:
-
-- `MonitoringConfig` contains all necessary details to connect to the PMM Server, including URL and API key.
-
--  An API key is generated to facilitate data transmission. This API key allows us to configure monitoring endpoints for individual database operators, enabling them to send data to PMM.
+For cluster-level Kubernetes metrics, OpenEverest also ships a VictoriaMetrics-based stack in the `everest-monitoring` namespace.
 
 !!! note
-    PMM is an external service supported by OpenEverest.
+    PMM is an external service; you must run your own PMM server for the providers that support it.
