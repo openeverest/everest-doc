@@ -72,6 +72,7 @@ kubectl delete crd \
   backupimports.backup.openeverest.io \
   restores.backup.openeverest.io \
   backupstorages.backup.openeverest.io \
+  backupstorageclasses.backup.openeverest.io \
   monitoringconfigs.monitoring.openeverest.io \
   plugins.extensions.openeverest.io \
   installedextensions.extensions.openeverest.io

@@ -83,6 +83,8 @@ Below is a comprehensive table outlining the permissions available for various *
     | database-cluster-backups|You can view database cluster backups| You can create database cluster backups|:x:| You can delete database cluster backups|
     | database-cluster-restores|You can view database cluster restores| You can create database cluster restores|You can modify database cluster restores| You can delete database cluster restores|
     | backup-storages and monitoring-instances |You can view backups and monitoring endpoints| You can create backups and monitoring endpoints|You can modify backups and monitoring endpoints| You can delete backups and monitoring endpoints|
+    | backup-storage-classes|You can view backup storage classes </br></br>**Note**: Creating or editing a backup storage requires read on its class.| :x: |:x:| :x:|
+    | secrets|You can view Secrets and select them for a backup storage </br></br>**Note**: Creating or editing a backup storage requires read on every Secret it names.| You can create Secrets, such as the credentials of a backup storage|:x:| You can delete Secrets|
     | database-cluster-credentials|View database data (credentials) </br> </br>**Note**: If no policy is defined:</br> * You cannot see the credentials and the connection string.</br> * You also cannot create a database from any backup.| :x: |:x:| :x:|
 
 
@@ -129,6 +131,27 @@ Below is a comprehensive table outlining the permissions available for various *
         - Update `database clusters` in that namespace
 
 
+### Backup storages and Secrets
+
+`backup-storage-classes` is read-only: the API doesn't create, update or delete backup storage classes, so even `role:admin` only gets `read`. Backup storage classes are cluster-scoped, so their objects have the form `<cluster>/<name>`, while the objects of namespaced resources have the form `<cluster>/<namespace>/<name>`.
+
+To create or edit a backup storage, besides `create` or `update` on `backup-storages`, you need:
+
+- `read` on the backup storage class it uses.
+- `read` on every Secret it names: the credentials Secret and, if it has one, the CA Secret.
+
+The API server doesn't create Secrets for backup storages. When you enter credentials or paste a CA bundle in the UI, or pass `--credentials-file` or `--ca-file` to `everestctl`, the Secret is created through the Secrets API first, which requires `create` on `secrets`.
+
+For example, the following role manages the backup storages of the `team-a` namespace in every cluster:
+
+```sh
+p, role:storage-admin, backup-storage-classes, read, */*
+p, role:storage-admin, backup-storages, *, */team-a/*
+p, role:storage-admin, secrets, read, */team-a/*
+p, role:storage-admin, secrets, create, */team-a/*
+```
+
+
 ## Roles in RBAC
 
 In Role-Based Access Control (RBAC), a Role is a set of permissions that define what actions (like read, write, update, delete) can be performed on specific resources within OpenEverest. In RBAC, roles are assigned to users, allowing them to interact with the resources according to the permissions defined by their roles.
@@ -151,6 +174,7 @@ p, role:admin, database-cluster-backups, *, */*
 p, role:admin, database-cluster-restores, *, */*
 p, role:admin, database-cluster-credentials, *, */*
 p, role:admin, backup-storages, *, */*
+p, role:admin, backup-storage-classes, read, */*
 p, role:admin, monitoring-instances, *, */*
 ```
 
