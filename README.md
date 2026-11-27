@@ -1,12 +1,21 @@
 
-# OpenEverest Documentation
+# OpenEverest Documentation (deprecated)
+
+> [!IMPORTANT]
+> **This repository is no longer maintained.** The OpenEverest documentation now lives in
+> [openeverest/docs](https://github.com/openeverest/docs) and is published at
+> [openeverest.io/docs](https://openeverest.io/docs/).
+>
+> Please open issues and pull requests in [openeverest/docs](https://github.com/openeverest/docs).
+> This repository is kept only as an archive of documentation for older releases (see [tags](https://github.com/openeverest/everest-doc/tags)).
+
 [![render](https://img.shields.io/badge/everest--doc-render-Green)](https://everest-doc.onrender.com/)
 [![Build](https://github.com/openeverest/everest-doc/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/openeverest/everest-doc/actions/workflows/build.yml)
 
 
-This repo holds the source files for the official [OpenEverest technical documentation](https://openeverest.io/docs/).
+This repo held the MkDocs sources for the OpenEverest documentation before it moved to [openeverest/docs](https://github.com/openeverest/docs). The rest of this README is kept for reference only.
 
-To contribute to that documentation, you can:
+Historically, to contribute to the documentation, you could:
 
 - **report a general problem** -- create a [GitHub](https://github.com/openeverest/everest-doc/issues) issue in this repository.
 
